@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jay App — Configurar contraseña</title>
+<script src="https://cdn.jsdelivr.net/npm/gotrue-js/dist/gotrue.js"></script>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0D0D0D;
+    color: #F0F0F0;
+    font-family: -apple-system, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+  }
+  .card {
+    width: 100%;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .logo {
+    width: 80px; height: 80px;
+    border-radius: 50%;
+    background: #C0000A;
+    overflow: hidden;
+    box-shadow: 0 0 40px rgba(192,0,10,0.5);
+  }
+  .logo img { width: 100%; height: 100%; object-fit: cover; }
+  .title {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .subtitle { font-size: 13px; color: #666; text-align: center; }
+  input {
+    width: 100%;
+    background: #1A1A1A;
+    border: 1.5px solid #2E2E2E;
+    border-radius: 12px;
+    color: #F0F0F0;
+    font-size: 15px;
+    padding: 14px 16px;
+    outline: none;
+    -webkit-appearance: none;
+  }
+  button {
+    width: 100%;
+    padding: 15px;
+    background: #C0000A;
+    border: none;
+    border-radius: 12px;
+    color: white;
+    font-size: 17px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+  .error { color: #ff4444; font-size: 13px; text-align: center; display: none; }
+  .fields { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">
+    <img src="icons/logo.png" alt="Logo">
+  </div>
+  <div>
+    <div class="title">Jay App</div>
+    <div class="subtitle" id="subtitle">Crea tu contraseña</div>
+  </div>
+  <div class="fields">
+    <input type="password" id="pass1" placeholder="Nueva contraseña" autocomplete="new-password">
+    <input type="password" id="pass2" placeholder="Confirmar contraseña" autocomplete="new-password">
+    <div class="error" id="error"></div>
+    <button onclick="setPassword()" id="btn">Guardar contraseña</button>
+  </div>
+</div>
+
+<script>
+const auth = new GoTrue({
+  APIUrl: 'https://appjay.netlify.app/.netlify/identity',
+  setCookie: false
+});
+
+const hash = window.location.hash;
+let token = null;
+let type = null;
+
+if (hash.includes('invite_token=')) {
+  token = hash.split('invite_token=')[1].split('&')[0];
+  type = 'invite';
+  document.getElementById('subtitle').textContent = 'Bienvenido — crea tu contraseña';
+} else if (hash.includes('recovery_token=')) {
+  token = hash.split('recovery_token=')[1].split('&')[0];
+  type = 'recovery';
+  document.getElementById('subtitle').textContent = 'Crea tu nueva contraseña';
+} else {
+  document.getElementById('subtitle').textContent = 'Link inválido o expirado';
+  document.querySelector('.fields').style.display = 'none';
+}
+
+function setPassword() {
+  const pass1 = document.getElementById('pass1').value;
+  const pass2 = document.getElementById('pass2').value;
+  const err = document.getElementById('error');
+  const btn = document.getElementById('btn');
+
+  if (!pass1 || pass1.length < 6) {
+    err.textContent = 'Mínimo 6 caracteres';
+    err.style.display = 'block';
+    return;
+  }
+  if (pass1 !== pass2) {
+    err.textContent = 'Las contraseñas no coinciden';
+    err.style.display = 'block';
+    return;
+  }
+
+  btn.textContent = 'Guardando...';
+  btn.disabled = true;
+  err.style.display = 'none';
+
+  const action = type === 'invite'
+    ? auth.acceptInvite(token, pass1, false)
+    : auth.recover(token).then(u => u.update({ password: pass1 }));
+
+  action
+    .then(() => {
+      document.querySelector('.fields').innerHTML = 
+        '<div style="text-align:center;color:#4CAF50;font-size:15px;">✅ Contraseña creada.<br>Ya puedes iniciar sesión.</div>' +
+        '<button onclick="window.location.href=\'/app/\'">Ir al catálogo</button>';
+    })
+    .catch(e => {
+      err.textContent = 'Error: ' + (e.message || 'Intenta de nuevo');
+      err.style.display = 'block';
+      btn.textContent = 'Guardar contraseña';
+      btn.disabled = false;
+    });
+}
+</script>
+</body>
+</html>
