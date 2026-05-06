@@ -1677,6 +1677,8 @@ document.addEventListener('keydown', e => {
 supabaseClient.auth.getSession().then(({ data: { session } }) => {
   if (session) {
     document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('mainHeader').style.display = 'block';
+    document.getElementById('bottomNav').style.display = 'flex';
     init();
   } else {
     document.getElementById('loginScreen').style.display = 'flex';
