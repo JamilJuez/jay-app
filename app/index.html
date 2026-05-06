@@ -1624,8 +1624,7 @@ function sendWhatsApp() {
 // ── START ──────────────────────────────────────────────
 const auth = new GoTrue({
   APIUrl: 'https://appjay.netlify.app/.netlify/identity',
-  audience: '',
-  setCookie: true
+  setCookie: false
 });
 
 function doLogin() {
