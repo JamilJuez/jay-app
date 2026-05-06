@@ -1,5 +1,5 @@
 // sw.js — Service Worker para uso offline
-const CACHE = 'catalogo-v12';
+const CACHE = 'catalogo-v13';
 
 const PRECACHE = [
   '/app/',
