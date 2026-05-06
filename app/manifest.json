@@ -1,8 +1,9 @@
 {
-  "name": "Catálogo Goya",
-  "short_name": "Catálogo",
+  "name": "Jay App",
+  "short_name": "Jay App",
   "description": "Catálogo de productos Goya",
-  "start_url": "/app/",
+  "start_url": "/",
+  "scope": "/",
   "display": "standalone",
   "background_color": "#0D0D0D",
   "theme_color": "#C0000A",

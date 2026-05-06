@@ -1350,7 +1350,7 @@ function createCard(p, i) {
   const isOut = inv === 0;
   const isLow = inv > 0 && inv <= 10;
 
-  const imgSrc = p.Imagen ? `../images/${p.Imagen}` : '';
+  const imgSrc = p.Imagen ? `images/${p.Imagen}` : '';
   const precio = p.Precio != null
     ? '$' + Number(p.Precio).toLocaleString('en', {minimumFractionDigits:2, maximumFractionDigits:2})
     : null;
@@ -1389,7 +1389,7 @@ function createCard(p, i) {
   });
   div.style.position = 'relative';
   div.appendChild(shareBtn);
-  div.addEventListener('click', () => openViewer(p.Imagen ? `../images/${p.Imagen}` : ''));
+  div.addEventListener('click', () => openViewer(p.Imagen ? `images/${p.Imagen}` : ''));
   return div;
 }
 
@@ -1400,7 +1400,7 @@ function openModal(p) {
   const isOut = inv === 0;
   const isLow = inv > 0 && inv <= 10;
 
-  const modalImgSrc = p.Imagen ? `../images/${p.Imagen}` : '';
+  const modalImgSrc = p.Imagen ? `images/${p.Imagen}` : '';
   document.getElementById('modalImg').src = modalImgSrc;
   document.getElementById('modalImg').onclick = () => openViewer(modalImgSrc);
   document.getElementById('modalSku').textContent  = `SKU ${p.Sku}`;
