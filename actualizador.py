@@ -158,8 +158,12 @@ def guardar_todo(productos_df):
             'Estado':       row['Estado']
         })
 
+    output = {
+        "last_updated": datetime.now().strftime("%Y-%m-%d %H:%M"),
+        "productos": records
+    }
     with open(OUTPUT_JSON, 'w', encoding='utf-8') as f:
-        json.dump(records, f, ensure_ascii=False)
+        json.dump(output, f, ensure_ascii=False)
     log(f"JSON generado: {OUTPUT_JSON} ({len(records)} productos)", "OK")
 
 def main():

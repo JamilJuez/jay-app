@@ -1,0 +1,31 @@
+ACTUALIZAR INVENTARIO
+Git add . 
+git commit -m "actualizar inventario"
+git push
+
+ACTUALIZAR PRECIOS
+git add .
+git commit -m "actualizar precios"
+git push
+
+ACTUALIZAR INVENTARIO
+1. Pon el nuevo sqlexec.xls en Jay-APP
+2. cd "C:\Users\jamil\Jay-APP"
+3. python actualizador.py
+4. git add .
+5. git commit -m "actualizar inventario"
+6. git push
+
+ACTUALIZAR PRECIOS
+1. Pon el nuevo PriceList.pdf en Jay-APP
+2. cd "C:\Users\jamil\Jay-APP"
+3. python actualizar_precios.py
+4. git add .
+5. git commit -m "actualizar precios"
+6. git push
+
+VER PREVIEW LOCAL
+cd "C:\Users\jamil\Jay-APP"
+python -m http.server 8000
+Abre: http://localhost:8000/app/
+

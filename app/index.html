@@ -1172,7 +1172,16 @@ let currentPage  = 'catalog';
 async function init() {
   try {
     const res  = await fetch('productos.json?v=' + Date.now());
-    allProducts = await res.json();
+    const data = await res.json();
+    allProducts = Array.isArray(data) ? data : data.productos;
+    const lastUpdated = Array.isArray(data) ? null : data.last_updated;
+    if (lastUpdated) {
+      const [datePart, timePart] = lastUpdated.split(' ');
+      const [year, month, day] = datePart.split('-');
+      const months = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+      document.getElementById('lastUpdate').textContent = 
+        'Inventario al ' + parseInt(day) + ' ' + months[parseInt(month)-1] + ' ' + year;
+    }
 
     // Build UI
     buildCategoryBar();
