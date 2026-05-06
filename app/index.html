@@ -10,7 +10,7 @@
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link rel="manifest" href="manifest.json">
 <title>Catálogo Goya</title>
-<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gotrue-js/dist/gotrue.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -1015,28 +1015,42 @@ html, body {
 <div id="loginScreen" style="
   position:fixed;inset:0;background:#0D0D0D;z-index:1000;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  padding:30px;gap:20px;
+  padding:24px;gap:0;
 ">
-  <div style="
-    width:90px;height:90px;border-radius:50%;background:#C0000A;
-    display:flex;align-items:center;justify-content:center;overflow:hidden;
-    box-shadow:0 0 40px rgba(192,0,10,0.5);
-  ">
-    <img src="icons/logo.png" style="width:100%;height:100%;object-fit:cover;">
+  <div style="width:100%;max-width:340px;display:flex;flex-direction:column;align-items:center;gap:20px;">
+    <div style="
+      width:80px;height:80px;border-radius:50%;background:#C0000A;
+      display:flex;align-items:center;justify-content:center;overflow:hidden;
+      box-shadow:0 0 40px rgba(192,0,10,0.5);
+    ">
+      <img src="icons/logo.png" style="width:100%;height:100%;object-fit:cover;">
+    </div>
+    <div style="text-align:center;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:800;color:#F0F0F0;letter-spacing:2px;text-transform:uppercase;">Jay App</div>
+      <div style="font-size:12px;color:#666;margin-top:2px;">Catálogo Goya — Acceso restringido</div>
+    </div>
+    <div style="width:100%;display:flex;flex-direction:column;gap:12px;">
+      <input id="loginEmail" type="email" placeholder="Email" autocomplete="email" inputmode="email"
+        style="width:100%;background:#1A1A1A;border:1.5px solid #2E2E2E;border-radius:12px;
+        color:#F0F0F0;font-family:'Barlow',sans-serif;font-size:15px;padding:14px 16px;
+        outline:none;box-sizing:border-box;-webkit-appearance:none;">
+      <input id="loginPassword" type="password" placeholder="Contraseña" autocomplete="current-password"
+        style="width:100%;background:#1A1A1A;border:1.5px solid #2E2E2E;border-radius:12px;
+        color:#F0F0F0;font-family:'Barlow',sans-serif;font-size:15px;padding:14px 16px;
+        outline:none;box-sizing:border-box;-webkit-appearance:none;">
+      <div id="loginError" style="color:#ff4444;font-size:12px;text-align:center;display:none;">
+        Email o contraseña incorrectos
+      </div>
+      <button id="loginBtn" onclick="doLogin()" style="
+        width:100%;padding:15px;margin-top:4px;
+        background:#C0000A;border:none;border-radius:12px;
+        color:white;font-family:'Barlow Condensed',sans-serif;
+        font-size:17px;font-weight:700;letter-spacing:1px;
+        text-transform:uppercase;cursor:pointer;
+        box-shadow:0 4px 20px rgba(192,0,10,0.4);
+      ">Iniciar Sesión</button>
+    </div>
   </div>
-  <div style="text-align:center;">
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:#F0F0F0;letter-spacing:2px;text-transform:uppercase;">Jay App</div>
-    <div style="font-size:13px;color:#888;margin-top:4px;">Catálogo Goya</div>
-  </div>
-  <button onclick="netlifyIdentity.open('login')" style="
-    width:100%;max-width:320px;padding:16px;
-    background:#C0000A;border:none;border-radius:14px;
-    color:white;font-family:'Barlow Condensed',sans-serif;
-    font-size:18px;font-weight:700;letter-spacing:1px;
-    text-transform:uppercase;cursor:pointer;
-    box-shadow:0 4px 20px rgba(192,0,10,0.4);
-  ">Iniciar Sesión</button>
-  <div style="font-size:11px;color:#555;">Acceso restringido — solo usuarios autorizados</div>
 </div>
 
 <!-- Loading Screen -->
@@ -1200,13 +1214,6 @@ let currentPage  = 'catalog';
 
 // ── INIT ──────────────────────────────────────────────
 async function init() {
-  // Check auth first
-  const user = netlifyIdentity.currentUser();
-  if (!user) {
-    document.getElementById('loginScreen').style.display = 'flex';
-    return;
-  }
-  document.getElementById('loginScreen').style.display = 'none';
   try {
     const res  = await fetch('productos.json?v=' + Date.now());
     const data = await res.json();
@@ -1615,19 +1622,82 @@ function sendWhatsApp() {
 }
 
 // ── START ──────────────────────────────────────────────
-netlifyIdentity.on('login', (user) => {
-  document.getElementById('loginScreen').style.display = 'none';
-  netlifyIdentity.close();
-  init();
+const auth = new GoTrue({
+  APIUrl: 'https://appjay.netlify.app/.netlify/identity',
+  audience: '',
+  setCookie: true
 });
 
-netlifyIdentity.on('logout', () => {
-  document.getElementById('loginScreen').style.display = 'flex';
-  document.getElementById('mainHeader').style.display = 'none';
-  document.getElementById('bottomNav').style.display = 'none';
+function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('loginError');
+  
+  if (!email || !password) return;
+  
+  btn.textContent = 'Entrando...';
+  btn.disabled = true;
+  err.style.display = 'none';
+  
+  auth.login(email, password, true)
+    .then(user => {
+      document.getElementById('loginScreen').style.display = 'none';
+      init();
+    })
+    .catch(e => {
+      err.style.display = 'block';
+      btn.textContent = 'Iniciar Sesión';
+      btn.disabled = false;
+    });
+}
+
+// Allow Enter key to submit
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none') {
+    doLogin();
+  }
 });
 
-init();
+// Handle invite token from email
+const hash = window.location.hash;
+if (hash && hash.includes('invite_token=')) {
+  const token = hash.split('invite_token=')[1].split('&')[0];
+  const newPass = prompt('Bienvenido! Crea tu contraseña:');
+  if (newPass) {
+    auth.acceptInvite(token, newPass, true)
+      .then(user => {
+        window.location.hash = '';
+        document.getElementById('loginScreen').style.display = 'none';
+        init();
+      })
+      .catch(err => {
+        alert('Error: ' + err.message);
+      });
+  }
+} else if (hash && hash.includes('recovery_token=')) {
+  const token = hash.split('recovery_token=')[1].split('&')[0];
+  const newPass = prompt('Nueva contraseña:');
+  if (newPass) {
+    auth.recover(token)
+      .then(user => user.update({ password: newPass }))
+      .then(() => {
+        window.location.hash = '';
+        document.getElementById('loginScreen').style.display = 'none';
+        init();
+      })
+      .catch(err => alert('Error: ' + err.message));
+  }
+} else {
+  // Check if already logged in
+  const user = auth.currentUser();
+  if (user) {
+    document.getElementById('loginScreen').style.display = 'none';
+    init();
+  } else {
+    document.getElementById('loginScreen').style.display = 'flex';
+  }
+}
 
 // ── FULLSCREEN IMAGE VIEWER WITH PINCH ZOOM ───────────
 (function() {
