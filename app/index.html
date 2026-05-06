@@ -990,6 +990,35 @@ html, body {
   gap: 6px;
 }
 
+
+/* ── SCROLL TO TOP ────────────────────────────────── */
+.scroll-top {
+  position: fixed;
+  bottom: calc(var(--safe-bottom) + 75px);
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  background: rgba(192,0,10,0.85);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  backdrop-filter: blur(4px);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+.scroll-top.visible {
+  opacity: 1;
+  pointer-events: all;
+}
+
 /* ── ANIMATIONS ───────────────────────────────────── */
 .card {
   animation: fadeIn 0.3s ease both;
@@ -1130,6 +1159,7 @@ html, body {
 </div>
 
 <!-- Bottom Nav -->
+<button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <nav class="bottom-nav" id="bottomNav" style="display:none">
   <button class="nav-btn active" id="navCatalog" onclick="showPage('catalog')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1636,6 +1666,13 @@ async function doLogout() {
   document.getElementById('mainHeader').style.display = 'none';
   document.getElementById('bottomNav').style.display = 'none';
 }
+
+
+// ── SCROLL TO TOP ──────────────────────────────────
+window.addEventListener('scroll', () => {
+  const btn = document.getElementById('scrollTop');
+  if (btn) btn.classList.toggle('visible', window.scrollY > 300);
+}, { passive: true });
 
 // ── START ──────────────────────────────────────────────
 const SUPABASE_URL = 'https://ovjpbdlzfvsgeheuixqh.supabase.co';
