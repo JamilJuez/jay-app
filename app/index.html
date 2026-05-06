@@ -1023,7 +1023,7 @@ html, body {
       display:flex;align-items:center;justify-content:center;overflow:hidden;
       box-shadow:0 0 40px rgba(192,0,10,0.5);
     ">
-      <img src="icons/logo.png" style="width:100%;height:100%;object-fit:cover;">
+      <img src="/icons/logo.png" style="width:100%;height:100%;object-fit:cover;">
     </div>
     <div style="text-align:center;">
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:800;color:#F0F0F0;letter-spacing:2px;text-transform:uppercase;">Jay App</div>
@@ -1056,7 +1056,7 @@ html, body {
 <!-- Loading Screen -->
 <div class="loading-screen" id="loadingScreen">
   <div class="loading-logo">
-    <img src="icons/logo.png" alt="Logo" onerror="this.style.display='none';this.parentElement.innerHTML='🐺'">
+    <img src="/icons/logo.png" alt="Logo" onerror="this.style.display='none';this.parentElement.innerHTML='🐺'">
   </div>
   <div class="loading-text">Cargando catálogo...</div>
   <div class="loading-bar"><div class="loading-bar-fill"></div></div>
@@ -1066,13 +1066,21 @@ html, body {
 <header class="header" id="mainHeader" style="display:none">
   <div class="header-top">
     <div class="logo-wrap">
-      <img src="icons/logo.png" alt="Logo" onerror="this.style.display='none';this.parentElement.innerHTML='🐺'">
+      <img src="/icons/logo.png" alt="Logo" onerror="this.style.display='none';this.parentElement.innerHTML='🐺'">
     </div>
     <div class="header-titles">
       <div class="app-title">Catálogo Goya</div>
       <div class="app-subtitle" id="lastUpdate">Cargando...</div>
     </div>
-    <div class="stats-badge" id="statsBadge">0 productos</div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <div class="stats-badge" id="statsBadge">0 productos</div>
+      <button onclick="doLogout()" style="
+        background:transparent;border:1px solid #2E2E2E;
+        color:#888;border-radius:20px;padding:3px 10px;
+        font-size:11px;font-family:'Barlow',sans-serif;
+        cursor:pointer;white-space:nowrap;
+      ">Salir</button>
+    </div>
   </div>
 
   <!-- Search (only on catalog page) -->
@@ -1619,6 +1627,14 @@ function sendWhatsApp() {
 
   closeDiscount();
   window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// ── LOGOUT ────────────────────────────────────────────
+async function doLogout() {
+  await supabaseClient.auth.signOut();
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('mainHeader').style.display = 'none';
+  document.getElementById('bottomNav').style.display = 'none';
 }
 
 // ── START ──────────────────────────────────────────────
