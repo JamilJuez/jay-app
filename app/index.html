@@ -10,6 +10,7 @@
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link rel="manifest" href="manifest.json">
 <title>Catálogo Goya</title>
+<script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -1009,6 +1010,35 @@ html, body {
 </head>
 <body>
 
+
+<!-- Login Screen -->
+<div id="loginScreen" style="
+  position:fixed;inset:0;background:#0D0D0D;z-index:1000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:30px;gap:20px;
+">
+  <div style="
+    width:90px;height:90px;border-radius:50%;background:#C0000A;
+    display:flex;align-items:center;justify-content:center;overflow:hidden;
+    box-shadow:0 0 40px rgba(192,0,10,0.5);
+  ">
+    <img src="icons/logo.png" style="width:100%;height:100%;object-fit:cover;">
+  </div>
+  <div style="text-align:center;">
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:800;color:#F0F0F0;letter-spacing:2px;text-transform:uppercase;">Jay App</div>
+    <div style="font-size:13px;color:#888;margin-top:4px;">Catálogo Goya</div>
+  </div>
+  <button onclick="netlifyIdentity.open('login')" style="
+    width:100%;max-width:320px;padding:16px;
+    background:#C0000A;border:none;border-radius:14px;
+    color:white;font-family:'Barlow Condensed',sans-serif;
+    font-size:18px;font-weight:700;letter-spacing:1px;
+    text-transform:uppercase;cursor:pointer;
+    box-shadow:0 4px 20px rgba(192,0,10,0.4);
+  ">Iniciar Sesión</button>
+  <div style="font-size:11px;color:#555;">Acceso restringido — solo usuarios autorizados</div>
+</div>
+
 <!-- Loading Screen -->
 <div class="loading-screen" id="loadingScreen">
   <div class="loading-logo">
@@ -1170,6 +1200,13 @@ let currentPage  = 'catalog';
 
 // ── INIT ──────────────────────────────────────────────
 async function init() {
+  // Check auth first
+  const user = netlifyIdentity.currentUser();
+  if (!user) {
+    document.getElementById('loginScreen').style.display = 'flex';
+    return;
+  }
+  document.getElementById('loginScreen').style.display = 'none';
   try {
     const res  = await fetch('productos.json?v=' + Date.now());
     const data = await res.json();
@@ -1578,6 +1615,18 @@ function sendWhatsApp() {
 }
 
 // ── START ──────────────────────────────────────────────
+netlifyIdentity.on('login', (user) => {
+  document.getElementById('loginScreen').style.display = 'none';
+  netlifyIdentity.close();
+  init();
+});
+
+netlifyIdentity.on('logout', () => {
+  document.getElementById('loginScreen').style.display = 'flex';
+  document.getElementById('mainHeader').style.display = 'none';
+  document.getElementById('bottomNav').style.display = 'none';
+});
+
 init();
 
 // ── FULLSCREEN IMAGE VIEWER WITH PINCH ZOOM ───────────
