@@ -1624,7 +1624,7 @@ function sendWhatsApp() {
 // ── START ──────────────────────────────────────────────
 const SUPABASE_URL = 'https://ovjpbdlzfvsgeheuixqh.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92anBiZGx6ZnZzZ2VoZXVpeHFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwMjM4ODYsImV4cCI6MjA5MzU5OTg4Nn0.yOOEXr4UFEvIUKb1pn8ixyjwpxGbfTyYnHQhBT4N6BM';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 async function doLogin() {
   const email = document.getElementById('loginEmail').value.trim();
@@ -1638,7 +1638,7 @@ async function doLogin() {
   btn.disabled = true;
   err.style.display = 'none';
 
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
 
   if (error) {
     err.style.display = 'block';
@@ -1658,7 +1658,7 @@ document.addEventListener('keydown', e => {
 });
 
 // Check if already logged in
-supabase.auth.getSession().then(({ data: { session } }) => {
+supabaseClient.auth.getSession().then(({ data: { session } }) => {
   if (session) {
     document.getElementById('loginScreen').style.display = 'none';
     init();
