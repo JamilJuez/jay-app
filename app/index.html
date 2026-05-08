@@ -580,7 +580,7 @@ html, body {
   overflow: hidden;
   display: none;
 }
-.promo-strip.has-Brands { display: block; }
+.promo-strip.has-promos { display: block; }
 .promo-strip img {
   width: 100%;
   height: auto;
@@ -704,15 +704,15 @@ html, body {
   100% { width: 0%; margin-left: 100%; }
 }
 
-/* ── Brands PAGE ──────────────────────────────────── */
+/* ── PROMOS PAGE ──────────────────────────────────── */
 .page { display: none; }
 .page.active { display: block; }
 
-.Brands-page {
+.promos-page {
   padding: 14px 12px calc(var(--safe-bottom) + 80px);
 }
 
-.Brands-header {
+.promos-header {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 28px;
   font-weight: 800;
@@ -757,14 +757,14 @@ html, body {
   line-height: 1.4;
 }
 
-.no-Brands {
+.no-promos {
   text-align: center;
   padding: 60px 20px;
   color: var(--muted);
 }
-.no-Brands-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.4; }
-.no-Brands-text { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; }
-.no-Brands-sub { font-size: 13px; margin-top: 6px; }
+.no-promos-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.4; }
+.no-promos-text { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; }
+.no-promos-sub { font-size: 13px; margin-top: 6px; }
 
 
 /* ── FULLSCREEN IMAGE VIEWER ──────────────────────────── */
@@ -1186,9 +1186,9 @@ html, body {
 </div>
 
 <!-- Special Categories Page -->
-<div class="page" id="BrandsPage">
-  <div class="Brands-page">
-    <div class="Brands-header">📦 Categorías Especiales</div>
+<div class="page" id="promosPage">
+  <div class="promos-page">
+    <div class="promos-header">📦 Categorías Especiales</div>
     
     <!-- Category tabs -->
     <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:12px;-webkit-overflow-scrolling:touch;">
@@ -1213,11 +1213,11 @@ html, body {
     </svg>
     Catálogo
   </button>
-  <button class="nav-btn" id="navBrands" onclick="showPage('Brands')">
+  <button class="nav-btn" id="navPromos" onclick="showPage('promos')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
     </svg>
-    Brands
+    Promos
   </button>
 </nav>
 
@@ -1505,7 +1505,7 @@ function createCard(p, i) {
     <div class="card-body">
       <div class="card-sku">SKU ${p.Sku}</div>
       <div class="card-name">${p.Nombre || ''}</div>
-      <div class="card-size">${p.Size || ''}${p.Unidades ? ' · ' + p.Unidades + ' uns' : ''}</div>
+      <div class="card-size">${p.Size || ''}${p.Unidades ? ' · ' + p.Unidades + ' uds/caja' : ''}</div>
       <div class="card-footer">
         <div>
           ${precio
@@ -1580,14 +1580,14 @@ function closeModal(e) {
 function showPage(page) {
   currentPage = page;
   document.getElementById('catalogPage').classList.toggle('active', page === 'catalog');
-  document.getElementById('BrandsPage').classList.toggle('active',  page === 'Brands');
+  document.getElementById('promosPage').classList.toggle('active',  page === 'promos');
   document.getElementById('searchWrap').style.display  = page === 'catalog' ? '' : 'none';
   document.getElementById('filterBar').style.display   = page === 'catalog' ? '' : 'none';
   document.getElementById('subcatBar').style.display   = page === 'catalog' ? '' : 'none';
   document.getElementById('resultCount').style.display = page === 'catalog' ? '' : 'none';
   document.getElementById('navCatalog').classList.toggle('active', page === 'catalog');
-  document.getElementById('navBrands').classList.toggle('active',  page === 'Brands');
-  if (page === 'Brands' && allProducts.length > 0) renderSpecCat();
+  document.getElementById('navPromos').classList.toggle('active',  page === 'promos');
+  if (page === 'promos' && allProducts.length > 0) renderSpecCat();
 }
 
 // ── SPECIAL CATEGORIES ────────────────────────────────
@@ -1595,9 +1595,8 @@ const MARCAS_KEYWORDS = {
   'Moderna': ['moderna', 'la moderna', 'marianita', 'marianitas'],
   'Maggi': ['maggi'],
   'Nestlé': ['nestle', 'nido', 'lechera', 'milo', 'nestum', 'cerelac', 'abuelita'],
-  'Natura': ['Naturas'],
   'Ducal': ['ducal'],
-  'Brandss': ['Brandss'],
+  'Naturas': ['naturas'],
   'Quaker': ['frescavena', 'quaker'],
   'Incaparina': ['incaparina'],
   'Cortés': ['cortes', 'embajador'],
@@ -1742,7 +1741,7 @@ function createSpecCard(p) {
       <div class="card-body">
         <div class="card-sku">SKU ${p.Sku}</div>
         <div class="card-name">${p.Nombre || ''}</div>
-        <div class="card-size">${p.Size || ''}${p.Unidades ? ' · ' + p.Unidades + ' uns' : ''}</div>
+        <div class="card-size">${p.Size || ''}${p.Unidades ? ' · ' + p.Unidades + ' uds/caja' : ''}</div>
         <div class="card-footer">
           <div class="card-price">${precio}</div>
           <div style="text-align:right">
