@@ -1623,7 +1623,7 @@ function getSpecProducts(cat) {
       });
     case 'sazon':
       return allProducts.filter(p =>
-        (p.SubCategoria || '').toUpperCase().includes('GOYA SAZON')
+        (p.SubCategoria || '').toUpperCase() === 'GOYA SAZON'
       );
     case 'restaurante':
       return allProducts.filter(p => (p.Tags || '').toLowerCase().includes('restaurante'));
