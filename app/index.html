@@ -1505,7 +1505,7 @@ function createCard(p, i) {
     <div class="card-body">
       <div class="card-sku">SKU ${p.Sku}</div>
       <div class="card-name">${p.Nombre || ''}</div>
-      <div class="card-size">${p.Size || ''}${p.Unidades ? ' · ' + p.Unidades + ' uds/caja' : ''}</div>
+      <div class="card-size">${p.Size || ''}${p.Unidades ? ' · ' + p.Unidades + ' uns' : ''}</div>
       <div class="card-footer">
         <div>
           ${precio
@@ -1741,7 +1741,7 @@ function createSpecCard(p) {
       <div class="card-body">
         <div class="card-sku">SKU ${p.Sku}</div>
         <div class="card-name">${p.Nombre || ''}</div>
-        <div class="card-size">${p.Size || ''}${p.Unidades ? ' · ' + p.Unidades + ' uds/caja' : ''}</div>
+        <div class="card-size">${p.Size || ''}${p.Unidades ? ' · ' + p.Unidades + ' uns' : ''}</div>
         <div class="card-footer">
           <div class="card-price">${precio}</div>
           <div style="text-align:right">
