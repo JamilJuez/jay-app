@@ -1461,7 +1461,7 @@ function createCard(p, i) {
     <div class="card-body">
       <div class="card-sku">SKU ${p.Sku}</div>
       <div class="card-name">${p.Nombre || ''}</div>
-      <div class="card-size">${p.Size || ''}</div>
+      <div class="card-size">${p.Size || ''}${p.Unidades ? ' · ' + p.Unidades + ' uds/caja' : ''}</div>
       <div class="card-footer">
         ${precio
           ? `<div class="card-price">${precio}</div>`
