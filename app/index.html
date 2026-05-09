@@ -1631,9 +1631,7 @@ function getSpecProducts(cat) {
     case 'restaurante':
       return allProducts.filter(p => (p.Tags || '').toLowerCase().includes('restaurante'));
     case 'kosher':
-      return KOSHER_SKUS.length > 0
-        ? allProducts.filter(p => KOSHER_SKUS.includes(String(p.Sku)))
-        : allProducts.filter(p => (p.Nombre || '').toLowerCase().includes('kosher'));
+      return allProducts.filter(p => p.Kosher === 'SI');
     default:
       return [];
   }
