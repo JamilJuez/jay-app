@@ -56,7 +56,10 @@ def cargar_productos():
     log(f"Cargando productos: {PRODUCTOS_XLSX}")
     try:
         df = pd.read_excel(PRODUCTOS_XLSX)
-        df = df[['Categoria','SubCategoria','Sku','Size','Precio','Nombre','Disponible','Imagen','Unidades','Estado']].copy()
+        cols = ['Categoria','SubCategoria','Sku','Size','Precio','Nombre','Disponible','Imagen','Unidades','Estado']
+        if 'Kosher' in df.columns:
+            cols.append('Kosher')
+        df = df[cols].copy()
         df = df.dropna(subset=['Sku','Nombre'])
         df['Sku'] = df['Sku'].astype(int).astype(str)
         df['Disponible'] = pd.to_numeric(df['Disponible'], errors='coerce').fillna(0).astype(int)
@@ -155,7 +158,8 @@ def guardar_todo(productos_df):
             'Disponible':   int(row['Disponible']),
             'Imagen':       row['Imagen'],
             'Unidades':     int(row['Unidades']),
-            'Estado':       row['Estado']
+            'Estado':       row['Estado'],
+            'Kosher':       str(row.get('Kosher', 'NO')) if 'Kosher' in row else 'NO'
         })
 
     output = {
