@@ -1839,6 +1839,18 @@ function sendWhatsApp() {
   window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 
+// ── ACTIVITY LOG ──────────────────────────────────────
+async function logActivity(email) {
+  try {
+    const platform = /iPhone|iPad|iPod/.test(navigator.userAgent) ? 'iOS' :
+                     /Android/.test(navigator.userAgent) ? 'Android' : 'Desktop';
+    await supabaseClient.from('activity_log').insert({
+      email: email,
+      plataforma: platform
+    });
+  } catch(e) {}
+}
+
 // ── LOGOUT ────────────────────────────────────────────
 async function doLogout() {
   await supabaseClient.auth.signOut();
@@ -1881,6 +1893,7 @@ async function doLogin() {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('mainHeader').style.display = 'block';
     document.getElementById('bottomNav').style.display = 'flex';
+    logActivity(data.user.email);
     init();
   }
 }
@@ -1898,6 +1911,7 @@ supabaseClient.auth.getSession().then(({ data: { session } }) => {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('mainHeader').style.display = 'block';
     document.getElementById('bottomNav').style.display = 'flex';
+    logActivity(session.user.email);
     init();
   } else {
     document.getElementById('loginScreen').style.display = 'flex';
