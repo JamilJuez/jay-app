@@ -1844,9 +1844,12 @@ async function logActivity(email) {
   try {
     const platform = /iPhone|iPad|iPod/.test(navigator.userAgent) ? 'iOS' :
                      /Android/.test(navigator.userAgent) ? 'Android' : 'Desktop';
+    const now = new Date();
+    const est = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
     await supabaseClient.from('activity_log').insert({
       email: email,
-      plataforma: platform
+      plataforma: platform,
+      created_at: est.toISOString()
     });
   } catch(e) {}
 }
