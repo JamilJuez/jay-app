@@ -1611,6 +1611,7 @@ function showPage(page) {
   currentPage = page;
   document.getElementById('catalogPage').classList.toggle('active', page === 'catalog');
   document.getElementById('BrandsPage').classList.toggle('active',  page === 'Brands');
+  document.getElementById('omsPage').classList.toggle('active',     page === 'oms');
   document.getElementById('searchWrap').style.display  = page === 'catalog' ? '' : 'none';
   document.getElementById('filterBar').style.display   = page === 'catalog' ? '' : 'none';
   document.getElementById('subcatBar').style.display   = page === 'catalog' ? '' : 'none';
