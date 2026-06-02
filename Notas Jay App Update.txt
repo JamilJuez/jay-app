@@ -1,3 +1,10 @@
+MANDAR NOTIFICACIONES:
+
+node enviar_notificacion.js "Jay App" "Inventario Actualizado Hoy"
+
+O Directamente:
+C:\Users\jamil\Jay-APP>node enviar_notificacion.js "Jay App" "Mensaje"
+
 ACTUALIZAR INVENTARIO
 Git add . 
 git commit -m "actualizar inventario"
@@ -28,4 +35,16 @@ VER PREVIEW LOCAL
 cd "C:\Users\jamil\Jay-APP"
 python -m http.server 8000
 Abre: http://localhost:8000/app/
+
+CUANDO CAMBIO ALGO EN EL CODIGO (diseño, funciones, etc)
+1. Abrir sw.js en Jay-APP con el bloc de notas
+2. Cambiar: const CACHE = 'catalogo-v2';
+   por:      const CACHE = 'catalogo-v3';
+   (siempre subir el numero)
+3. Guardar
+4. Abrir CMD:
+   cd "C:\Users\jamil\Jay-APP"
+   git add .
+   git commit -m "descripcion del cambio"
+   git push
 
