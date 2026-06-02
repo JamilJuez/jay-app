@@ -1,22 +1,10 @@
 // sw.js — Service Worker para uso offline
-const CACHE = 'catalogo-v26';
+const CACHE = 'catalogo-v27';
 
-const PRECACHE = [
-  '/app/',
-  '/app/index.html',
-  '/app/productos.json',
-  '/app/manifest.json',
-  'https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap'
-];
-
-// Install: pre-cache shell
 self.addEventListener('install', e => {
-  e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(PRECACHE)).then(() => self.skipWaiting())
-  );
+  e.waitUntil(self.skipWaiting());
 });
 
-// Activate: clean old caches
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
@@ -25,12 +13,13 @@ self.addEventListener('activate', e => {
   );
 });
 
-// Fetch: cache-first for assets, network-first for data
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
+  if (e.request.method !== 'GET') return;
+  if (url.hostname !== 'appjay.netlify.app' && url.hostname !== 'localhost') return;
 
   // Network-first for productos.json
-  if (url.pathname.includes('productos.json') || url.pathname.includes('promociones.json')) {
+  if (url.pathname.includes('productos.json')) {
     e.respondWith(
       fetch(e.request)
         .then(res => {
@@ -50,8 +39,7 @@ self.addEventListener('fetch', e => {
         if (cached) return cached;
         return fetch(e.request).then(res => {
           if (res.ok) {
-            const clone = res.clone();
-            caches.open(CACHE).then(c => c.put(e.request, clone));
+            caches.open(CACHE).then(c => c.put(e.request, res.clone()));
           }
           return res;
         }).catch(() => new Response('', { status: 404 }));
@@ -60,35 +48,28 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Cache-first for everything else
+  // Network-first for everything else
   e.respondWith(
-    caches.match(e.request).then(cached =>
-      cached || fetch(e.request).then(res => {
-        if (res.ok && e.request.method === 'GET') {
-          const clone = res.clone();
-          caches.open(CACHE).then(c => c.put(e.request, clone));
-        }
+    fetch(e.request)
+      .then(res => {
+        if (res.ok) caches.open(CACHE).then(c => c.put(e.request, res.clone()));
         return res;
       })
-    )
+      .catch(() => caches.match(e.request))
   );
 });
 
-// ── PUSH NOTIFICATIONS ─────────────────────────────
+// PUSH NOTIFICATIONS
 self.addEventListener('push', e => {
   const data = e.data ? e.data.json() : {};
-  const title = data.title || 'Jay App';
-  const options = {
-    body: data.body || 'Tienes una notificación nueva',
+  e.waitUntil(self.registration.showNotification(data.title || 'Jay App', {
+    body: data.body || 'Notificación nueva',
     icon: '/icons/icon-192.png',
-    badge: '/icons/icon-192.png',
-    data: { url: data.url || '/app/' }
-  };
-  e.waitUntil(self.registration.showNotification(title, options));
+    data: { url: data.url || '/' }
+  }));
 });
 
 self.addEventListener('notificationclick', e => {
   e.notification.close();
-  const url = e.notification.data.url || '/app/';
-  e.waitUntil(clients.openWindow(url));
+  e.waitUntil(clients.openWindow(e.notification.data.url || '/'));
 });
