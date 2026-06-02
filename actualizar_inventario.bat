@@ -17,6 +17,10 @@ git commit -m "actualizar inventario"
 git push
 
 echo.
+echo Enviando notificacion a usuarios...
+node enviar_notificacion.js "Jay App" "Inventario Actualizado Hoy"
+
+echo.
 echo ================================================
 echo    LISTO! La app se actualiza en 1-2 minutos.
 echo ================================================

@@ -37,7 +37,7 @@ async function enviar(titulo, mensaje) {
       await webpush.sendNotification(sub, JSON.stringify({
         title: titulo,
         body: mensaje,
-        url: '/app/'
+        url: 'https://appjay.netlify.app/app/'
       }));
       console.log(`  ✅ ${t.email} (${t.plataforma})`);
       exitosos++;

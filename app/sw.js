@@ -1,5 +1,5 @@
 // sw.js — Service Worker para uso offline
-const CACHE = 'catalogo-v27';
+const CACHE = 'catalogo-v28';
 
 self.addEventListener('install', e => {
   e.waitUntil(self.skipWaiting());
@@ -65,11 +65,11 @@ self.addEventListener('push', e => {
   e.waitUntil(self.registration.showNotification(data.title || 'Jay App', {
     body: data.body || 'Notificación nueva',
     icon: '/icons/icon-192.png',
-    data: { url: data.url || '/' }
+    data: { url: data.url || 'https://appjay.netlify.app' }
   }));
 });
 
 self.addEventListener('notificationclick', e => {
   e.notification.close();
-  e.waitUntil(clients.openWindow(e.notification.data.url || '/'));
+  e.waitUntil(clients.openWindow(e.notification.data.url || 'https://appjay.netlify.app'));
 });
