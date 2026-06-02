@@ -1187,13 +1187,25 @@ html, body {
 
 <!-- Goya OMS Page -->
 <div class="page" id="omsPage">
-  <div style="height:calc(100vh - 60px);display:flex;flex-direction:column;">
-    <div style="background:var(--black);padding:12px 14px;border-bottom:2px solid var(--red);display:flex;align-items:center;gap:10px;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:var(--text);text-transform:uppercase;">🏢 Goya OMS</div>
-      <div style="flex:1"></div>
-      <button onclick="document.getElementById('omsFrame').src=document.getElementById('omsFrame').src" style="background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:20px;padding:3px 10px;font-size:11px;cursor:pointer;">↻ Recargar</button>
+  <div style="height:calc(100vh - 60px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:24px;">
+    <div style="
+      width:80px;height:80px;border-radius:50%;background:var(--red);
+      display:flex;align-items:center;justify-content:center;font-size:36px;
+      box-shadow:0 0 30px rgba(192,0,10,0.4);
+    ">🏢</div>
+    <div style="text-align:center;">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:1px;">Goya OMS</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:6px;">Portal de órdenes de Goya</div>
     </div>
-    <iframe id="omsFrame" src="" style="flex:1;border:none;width:100%;background:#fff;" allowfullscreen></iframe>
+    <button onclick="window.open('https://portal.goya.com/oms2/#/order-entry','_blank')" style="
+      width:100%;max-width:300px;padding:16px;
+      background:var(--red);border:none;border-radius:14px;
+      color:white;font-family:'Barlow Condensed',sans-serif;
+      font-size:18px;font-weight:700;letter-spacing:1px;
+      text-transform:uppercase;cursor:pointer;
+      box-shadow:0 4px 20px rgba(192,0,10,0.4);
+    ">Abrir Portal →</button>
+    <div style="font-size:11px;color:var(--muted);text-align:center;">Se abrirá en tu navegador</div>
   </div>
 </div>
 
