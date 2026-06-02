@@ -1187,26 +1187,10 @@ html, body {
 
 <!-- Goya OMS Page -->
 <div class="page" id="omsPage">
-  <div style="height:calc(100vh - 60px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:24px;">
-    <div style="
-      width:80px;height:80px;border-radius:50%;background:var(--red);
-      display:flex;align-items:center;justify-content:center;font-size:36px;
-      box-shadow:0 0 30px rgba(192,0,10,0.4);
-    ">🏢</div>
-    <div style="text-align:center;">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:1px;">Goya OMS</div>
-      <div style="font-size:13px;color:var(--muted);margin-top:6px;">Portal de órdenes de Goya</div>
-    </div>
-    <button onclick="window.open('https://portal.goya.com/oms2/#/order-entry','_blank')" style="
-      width:100%;max-width:300px;padding:16px;
-      background:var(--red);border:none;border-radius:14px;
-      color:white;font-family:'Barlow Condensed',sans-serif;
-      font-size:18px;font-weight:700;letter-spacing:1px;
-      text-transform:uppercase;cursor:pointer;
-      box-shadow:0 4px 20px rgba(192,0,10,0.4);
-    ">Abrir Portal →</button>
-    <div style="font-size:11px;color:var(--muted);text-align:center;">Se abrirá en tu navegador</div>
-  </div>
+  <iframe id="omsFrame" src="https://portal.goya.com/oms2/#/order-entry"
+    style="width:100%;height:calc(100vh - 60px);border:none;display:block;background:#fff;"
+    allowfullscreen allow="fullscreen">
+  </iframe>
 </div>
 
 <!-- Special Categories Page -->
@@ -1611,7 +1595,6 @@ function showPage(page) {
   currentPage = page;
   document.getElementById('catalogPage').classList.toggle('active', page === 'catalog');
   document.getElementById('BrandsPage').classList.toggle('active',  page === 'Brands');
-  document.getElementById('omsPage').classList.toggle('active',     page === 'oms');
   document.getElementById('searchWrap').style.display  = page === 'catalog' ? '' : 'none';
   document.getElementById('filterBar').style.display   = page === 'catalog' ? '' : 'none';
   document.getElementById('subcatBar').style.display   = page === 'catalog' ? '' : 'none';
