@@ -1,5 +1,5 @@
 // sw.js — Service Worker para uso offline
-const CACHE = 'catalogo-v24';
+const CACHE = 'catalogo-v25';
 
 const PRECACHE = [
   '/app/',
@@ -29,7 +29,7 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
 
-  // Network-first for productos.json (always fresh data when online)
+  // Network-first for productos.json
   if (url.pathname.includes('productos.json') || url.pathname.includes('promociones.json')) {
     e.respondWith(
       fetch(e.request)
@@ -43,7 +43,7 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Cache-first for images (performance)
+  // Cache-first for images
   if (url.pathname.includes('/images/') || url.pathname.includes('/icons/')) {
     e.respondWith(
       caches.match(e.request).then(cached => {
@@ -72,4 +72,23 @@ self.addEventListener('fetch', e => {
       })
     )
   );
+});
+
+// ── PUSH NOTIFICATIONS ─────────────────────────────
+self.addEventListener('push', e => {
+  const data = e.data ? e.data.json() : {};
+  const title = data.title || 'Jay App';
+  const options = {
+    body: data.body || 'Tienes una notificación nueva',
+    icon: '/icons/icon-192.png',
+    badge: '/icons/icon-192.png',
+    data: { url: data.url || '/app/' }
+  };
+  e.waitUntil(self.registration.showNotification(title, options));
+});
+
+self.addEventListener('notificationclick', e => {
+  e.notification.close();
+  const url = e.notification.data.url || '/app/';
+  e.waitUntil(clients.openWindow(url));
 });

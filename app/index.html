@@ -1854,6 +1854,37 @@ async function logActivity(email) {
   } catch(e) {}
 }
 
+// ── PUSH NOTIFICATIONS ───────────────────────────────
+const VAPID_PUBLIC_KEY =  + VAPID_PUBLIC + ;
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = window.atob(base64);
+  return Uint8Array.from([...rawData].map(c => c.charCodeAt(0)));
+}
+
+async function registerPush(email) {
+  try {
+    if (!('PushManager' in window)) return;
+    const reg = await navigator.serviceWorker.ready;
+    let sub = await reg.pushManager.getSubscription();
+    if (!sub) {
+      sub = await reg.pushManager.subscribe({
+        userVisibleOnly: true,
+        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+      });
+    }
+    const platform = /iPhone|iPad|iPod/.test(navigator.userAgent) ? 'iOS' :
+                     /Android/.test(navigator.userAgent) ? 'Android' : 'Desktop';
+    const token = JSON.stringify(sub);
+    await supabaseClient.from('push_tokens').upsert({ email, token, plataforma: platform }, { onConflict: 'email' });
+    console.log('Push registrado');
+  } catch(e) {
+    console.log('Push no disponible:', e.message);
+  }
+}
+
 // ── LOGOUT ────────────────────────────────────────────
 async function doLogout() {
   await supabaseClient.auth.signOut();
@@ -1897,6 +1928,7 @@ async function doLogin() {
     document.getElementById('mainHeader').style.display = 'block';
     document.getElementById('bottomNav').style.display = 'flex';
     logActivity(data.user.email);
+    registerPush(data.user.email);
     init();
   }
 }
@@ -1915,6 +1947,7 @@ supabaseClient.auth.getSession().then(({ data: { session } }) => {
     document.getElementById('mainHeader').style.display = 'block';
     document.getElementById('bottomNav').style.display = 'flex';
     logActivity(session.user.email);
+    registerPush(session.user.email);
     init();
   } else {
     document.getElementById('loginScreen').style.display = 'flex';
