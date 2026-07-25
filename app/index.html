@@ -1608,7 +1608,7 @@ function createCard(p, i) {
   });
   div.style.position = 'relative';
   div.appendChild(shareBtn);
-  div.addEventListener('click', () => openViewer(p.Imagen ? `images/${p.Imagen}` : ''));
+  div.addEventListener('click', () => openModal(p));
   return div;
 }
 
