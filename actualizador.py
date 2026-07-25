@@ -59,6 +59,8 @@ def cargar_productos():
         cols = ['Categoria','SubCategoria','Sku','Size','Precio','Nombre','Disponible','Imagen','Unidades','Estado']
         if 'Kosher' in df.columns:
             cols.append('Kosher')
+        if 'UPC' in df.columns:
+            cols.append('UPC')
         df = df[cols].copy()
         df = df.dropna(subset=['Sku','Nombre'])
         df['Sku'] = df['Sku'].astype(int).astype(str)
@@ -159,7 +161,8 @@ def guardar_todo(productos_df):
             'Imagen':       row['Imagen'],
             'Unidades':     int(row['Unidades']),
             'Estado':       row['Estado'],
-            'Kosher':       str(row.get('Kosher', 'NO')) if 'Kosher' in row else 'NO'
+            'Kosher':       str(row.get('Kosher', 'NO')) if 'Kosher' in row else 'NO',
+            'UPC':          str(row['UPC']) if 'UPC' in row.index and pd.notna(row.get('UPC')) else ''
         })
 
     output = {

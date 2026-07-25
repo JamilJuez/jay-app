@@ -11,6 +11,7 @@
 <link rel="manifest" href="manifest.json">
 <title>Catálogo Goya</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -373,8 +374,8 @@ html, body {
 
 .card-sku {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 13px;
-  color: #FF6B6B;
+  font-size: 11px;
+  color: var(--red);
   font-weight: 700;
   letter-spacing: 0.5px;
 }
@@ -391,8 +392,8 @@ html, body {
 }
 
 .card-size {
-  font-size: 12px;
-  color: #AAAAAA;
+  font-size: 11px;
+  color: var(--muted);
 }
 
 .card-footer {
@@ -405,9 +406,9 @@ html, body {
 
 .card-price {
   font-family: 'Barlow Condensed', sans-serif;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 800;
-  color: #FF6B6B;
+  color: var(--red-light);
 }
 
 .card-price.no-price {
@@ -418,10 +419,9 @@ html, body {
 }
 
 .card-inv {
-  font-size: 13px;
-  color: #CCCCCC;
+  font-size: 11px;
+  color: var(--muted);
   text-align: right;
-  font-weight: 600;
 }
 
 .card-inv.low { color: #ff8800; }
@@ -581,7 +581,7 @@ html, body {
   overflow: hidden;
   display: none;
 }
-.promo-strip.has-Brands { display: block; }
+.promo-strip.has-promos { display: block; }
 .promo-strip img {
   width: 100%;
   height: auto;
@@ -705,15 +705,15 @@ html, body {
   100% { width: 0%; margin-left: 100%; }
 }
 
-/* ── Brands PAGE ──────────────────────────────────── */
+/* ── PROMOS PAGE ──────────────────────────────────── */
 .page { display: none; }
 .page.active { display: block; }
 
-.Brands-page {
+.promos-page {
   padding: 14px 12px calc(var(--safe-bottom) + 80px);
 }
 
-.Brands-header {
+.promos-header {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 28px;
   font-weight: 800;
@@ -758,14 +758,14 @@ html, body {
   line-height: 1.4;
 }
 
-.no-Brands {
+.no-promos {
   text-align: center;
   padding: 60px 20px;
   color: var(--muted);
 }
-.no-Brands-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.4; }
-.no-Brands-text { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; }
-.no-Brands-sub { font-size: 13px; margin-top: 6px; }
+.no-promos-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.4; }
+.no-promos-text { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; }
+.no-promos-sub { font-size: 13px; margin-top: 6px; }
 
 
 /* ── FULLSCREEN IMAGE VIEWER ──────────────────────────── */
@@ -1055,6 +1055,63 @@ html, body {
 .spec-empty-icon { font-size: 40px; margin-bottom: 10px; opacity: 0.4; }
 .spec-empty-text { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; }
 
+/* ── BARCODE MODAL ────────────────────────────────── */
+.barcode-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  padding: 20px;
+}
+.barcode-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+.barcode-modal {
+  background: #fff;
+  border-radius: 20px;
+  padding: 24px 20px 20px;
+  width: 100%;
+  max-width: 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+.barcode-name {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #111;
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+.barcode-sku { font-size: 11px; color: #888; letter-spacing: 0.5px; }
+#barcodeCanvas { width: 100%; max-width: 280px; }
+.barcode-upc-text { font-family: monospace; font-size: 13px; color: #333; letter-spacing: 1px; }
+.barcode-close {
+  width: 100%;
+  padding: 12px;
+  background: var(--red);
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+.barcode-no-upc { font-size: 13px; color: #888; text-align: center; padding: 10px 0; }
+
 /* ── ANIMATIONS ───────────────────────────────────── */
 .card {
   animation: fadeIn 0.3s ease both;
@@ -1187,9 +1244,9 @@ html, body {
 </div>
 
 <!-- Special Categories Page -->
-<div class="page" id="BrandsPage">
-  <div class="Brands-page">
-    <div class="Brands-header">📦 Categorías Especiales</div>
+<div class="page" id="promosPage">
+  <div class="promos-page">
+    <div class="promos-header">📦 Categorías Especiales</div>
     
     <!-- Category tabs -->
     <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding-bottom:12px;-webkit-overflow-scrolling:touch;">
@@ -1214,11 +1271,11 @@ html, body {
     </svg>
     Catálogo
   </button>
-  <button class="nav-btn" id="navBrands" onclick="showPage('Brands')">
+  <button class="nav-btn" id="navPromos" onclick="showPage('promos')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
     </svg>
-    Brands
+    Promos
   </button>
 </nav>
 
@@ -1234,6 +1291,22 @@ html, body {
       <div class="modal-name" id="modalName"></div>
       <div class="modal-cat" id="modalCat"></div>
       <div class="modal-stats" id="modalStats"></div>
+      <button id="modalBarcodeBtn" onclick="openBarcodeModal()" style="
+        display:none;
+        width:100%;
+        margin-bottom:8px;
+        padding:12px;
+        background:var(--card);
+        border:1.5px solid var(--border);
+        border-radius:12px;
+        color:var(--text);
+        font-family:'Barlow Condensed',sans-serif;
+        font-size:16px;
+        font-weight:700;
+        letter-spacing:1px;
+        text-transform:uppercase;
+        cursor:pointer;
+      ">📊 Ver Código de Barras</button>
       <button class="modal-close" onclick="closeModal()">Cerrar</button>
     </div>
   </div>
@@ -1283,6 +1356,16 @@ html, body {
   <button class="img-viewer-close" onclick="closeViewer()">✕</button>
   <div class="img-viewer-inner" id="viewerInner">
     <img id="viewerImg" src="" alt="">
+  </div>
+</div>
+
+<!-- Barcode Modal -->
+<div class="barcode-overlay" id="barcodeOverlay" onclick="if(event.target===this)closeBarcodeModal()">
+  <div class="barcode-modal">
+    <div class="barcode-name" id="barcodeProductName"></div>
+    <div class="barcode-sku" id="barcodeProductSku"></div>
+    <div id="barcodeContent"></div>
+    <button class="barcode-close" onclick="closeBarcodeModal()">Cerrar</button>
   </div>
 </div>
 
@@ -1506,14 +1589,11 @@ function createCard(p, i) {
     <div class="card-body">
       <div class="card-sku">SKU ${p.Sku}</div>
       <div class="card-name">${p.Nombre || ''}</div>
-      <div class="card-size">${p.Size || ''}${p.Unidades ? ' · ' + p.Unidades + ' uns' : ''}</div>
+      <div class="card-size">${p.Size || ''}${p.Unidades ? ' · ' + p.Unidades + ' uds/caja' : ''}</div>
       <div class="card-footer">
-        <div>
-          ${precio
-            ? `<div class="card-price">${precio}</div>`
-            : `<div class="card-price no-price">Sin precio</div>`}
-          ${p.Precio && p.Unidades ? `<div style="font-size:10px;color:var(--muted);margin-top:1px">\$${(p.Precio/p.Unidades).toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2})}/unidad</div>` : ''}
-        </div>
+        ${precio
+          ? `<div class="card-price">${precio}</div>`
+          : `<div class="card-price no-price">Sin precio</div>`}
         <div class="card-inv ${invClass}">${invText}</div>
       </div>
     </div>
@@ -1567,6 +1647,12 @@ function openModal(p) {
     </div>
   `;
   document.getElementById('modalStats').innerHTML = statsHtml;
+
+  // Barcode button
+  const barcodeBtn = document.getElementById('modalBarcodeBtn');
+  barcodeBtn._product = p;
+  barcodeBtn.style.display = p.UPC ? 'block' : 'none';
+
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -1581,23 +1667,23 @@ function closeModal(e) {
 function showPage(page) {
   currentPage = page;
   document.getElementById('catalogPage').classList.toggle('active', page === 'catalog');
-  document.getElementById('BrandsPage').classList.toggle('active',  page === 'Brands');
+  document.getElementById('promosPage').classList.toggle('active',  page === 'promos');
   document.getElementById('searchWrap').style.display  = page === 'catalog' ? '' : 'none';
   document.getElementById('filterBar').style.display   = page === 'catalog' ? '' : 'none';
   document.getElementById('subcatBar').style.display   = page === 'catalog' ? '' : 'none';
   document.getElementById('resultCount').style.display = page === 'catalog' ? '' : 'none';
   document.getElementById('navCatalog').classList.toggle('active', page === 'catalog');
-  document.getElementById('navBrands').classList.toggle('active',  page === 'Brands');
-  if (page === 'Brands' && allProducts.length > 0) renderSpecCat();
+  document.getElementById('navPromos').classList.toggle('active',  page === 'promos');
+  if (page === 'promos' && allProducts.length > 0) renderSpecCat();
 }
 
 // ── SPECIAL CATEGORIES ────────────────────────────────
 const MARCAS_KEYWORDS = {
-  'Moderna': ['moderna', 'la moderna', 'marianita', 'marianitas','mdrna'],
+  'Moderna': ['moderna', 'la moderna', 'marianita', 'marianitas'],
   'Maggi': ['maggi'],
   'Nestlé': ['nestle', 'nido', 'lechera', 'milo', 'nestum', 'cerelac', 'abuelita'],
   'Ducal': ['ducal'],
-  'Naturas': ['naturas', "natura's"],
+  'Naturas': ['natura', 'naturas'],
   'Quaker': ['frescavena', 'quaker'],
   'Incaparina': ['incaparina'],
   'Cortés': ['cortes', 'embajador'],
@@ -1632,7 +1718,9 @@ function getSpecProducts(cat) {
     case 'restaurante':
       return allProducts.filter(p => (p.Tags || '').toLowerCase().includes('restaurante'));
     case 'kosher':
-      return allProducts.filter(p => p.Kosher === 'SI');
+      return KOSHER_SKUS.length > 0
+        ? allProducts.filter(p => KOSHER_SKUS.includes(String(p.Sku)))
+        : allProducts.filter(p => (p.Nombre || '').toLowerCase().includes('kosher'));
     default:
       return [];
   }
@@ -1740,7 +1828,7 @@ function createSpecCard(p) {
       <div class="card-body">
         <div class="card-sku">SKU ${p.Sku}</div>
         <div class="card-name">${p.Nombre || ''}</div>
-        <div class="card-size">${p.Size || ''}${p.Unidades ? ' · ' + p.Unidades + ' uns' : ''}</div>
+        <div class="card-size">${p.Size || ''}${p.Unidades ? ' · ' + p.Unidades + ' uds/caja' : ''}</div>
         <div class="card-footer">
           <div class="card-price">${precio}</div>
           <div style="text-align:right">
@@ -1840,50 +1928,53 @@ function sendWhatsApp() {
   window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
 
-// ── ACTIVITY LOG ──────────────────────────────────────
-async function logActivity(email) {
-  try {
-    const platform = /iPhone|iPad|iPod/.test(navigator.userAgent) ? 'iOS' :
-                     /Android/.test(navigator.userAgent) ? 'Android' : 'Desktop';
-    const now = new Date();
-    const est = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }));
-    await supabaseClient.from('activity_log').insert({
-      email: email,
-      plataforma: platform,
-      created_at: est.toISOString()
-    });
-  } catch(e) {}
-}
+// ── BARCODE MODAL ─────────────────────────────────────
+function openBarcodeModal() {
+  const p = document.getElementById('modalBarcodeBtn')._product;
+  if (!p) return;
 
-// ── PUSH NOTIFICATIONS ───────────────────────────────
-const VAPID_PUBLIC_KEY = 'BHEg1OHTNkWaTeZaxN4fm0GUP1eChkUZlx7PmmzMKGIGlZFQtF9NeJ60KG_wHs8Gl-7FsQYzlshOD5KFYNhhAuk';
+  document.getElementById('barcodeProductName').textContent = p.Nombre || '';
+  document.getElementById('barcodeProductSku').textContent = `SKU ${p.Sku}`;
 
-function urlBase64ToUint8Array(base64String) {
-  const padding = '='.repeat((4 - base64String.length % 4) % 4);
-  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
-  const rawData = window.atob(base64);
-  return Uint8Array.from([...rawData].map(c => c.charCodeAt(0)));
-}
+  const content = document.getElementById('barcodeContent');
+  const upc = (p.UPC || '').toString().replace(/\D/g, '');
 
-async function registerPush(email) {
-  try {
-    if (!('PushManager' in window)) return;
-    const reg = await navigator.serviceWorker.ready;
-    let sub = await reg.pushManager.getSubscription();
-    if (!sub) {
-      sub = await reg.pushManager.subscribe({
-        userVisibleOnly: true,
-        applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+  if (upc && upc.length >= 8) {
+    content.innerHTML = `
+      <svg id="barcodeCanvas"></svg>
+      <div class="barcode-upc-text">${upc}</div>
+    `;
+    try {
+      JsBarcode('#barcodeCanvas', upc, {
+        format: upc.length === 12 ? 'UPC' : upc.length === 13 ? 'EAN13' : 'CODE128',
+        width: 2,
+        height: 80,
+        displayValue: false,
+        margin: 10,
+        background: '#ffffff',
+        lineColor: '#000000'
       });
+    } catch(e) {
+      // fallback a CODE128 si el formato no matchea
+      try {
+        JsBarcode('#barcodeCanvas', upc, {
+          format: 'CODE128', width: 2, height: 80,
+          displayValue: false, margin: 10,
+          background: '#ffffff', lineColor: '#000000'
+        });
+      } catch(e2) {
+        content.innerHTML = `<div class="barcode-no-upc">No se pudo generar el barcode para: ${upc}</div>`;
+      }
     }
-    const platform = /iPhone|iPad|iPod/.test(navigator.userAgent) ? 'iOS' :
-                     /Android/.test(navigator.userAgent) ? 'Android' : 'Desktop';
-    const token = JSON.stringify(sub);
-    await supabaseClient.from('push_tokens').upsert({ email, token, plataforma: platform }, { onConflict: 'email' });
-    console.log('Push registrado');
-  } catch(e) {
-    console.log('Push no disponible:', e.message);
+  } else {
+    content.innerHTML = `<div class="barcode-no-upc">Sin UPC registrado para este producto</div>`;
   }
+
+  document.getElementById('barcodeOverlay').classList.add('open');
+}
+
+function closeBarcodeModal() {
+  document.getElementById('barcodeOverlay').classList.remove('open');
 }
 
 // ── LOGOUT ────────────────────────────────────────────
@@ -1928,8 +2019,6 @@ async function doLogin() {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('mainHeader').style.display = 'block';
     document.getElementById('bottomNav').style.display = 'flex';
-    logActivity(data.user.email);
-    registerPush(data.user.email);
     init();
   }
 }
@@ -1947,8 +2036,6 @@ supabaseClient.auth.getSession().then(({ data: { session } }) => {
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('mainHeader').style.display = 'block';
     document.getElementById('bottomNav').style.display = 'flex';
-    logActivity(session.user.email);
-    registerPush(session.user.email);
     init();
   } else {
     document.getElementById('loginScreen').style.display = 'flex';
