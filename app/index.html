@@ -2044,7 +2044,9 @@ function cambiarQty(sku, delta) {
   const item = ordenItems.find(i => String(i.producto.Sku) === String(sku));
   if (!item) return;
   item.qty = Math.max(1, item.qty + delta);
-  renderOrden();
+  // Solo actualizar el input, no re-renderizar todo
+  const input = document.querySelector(`input[data-qty-sku="${sku}"]`);
+  if (input) input.value = item.qty;
   guardarOrdenActual();
 }
 
@@ -2086,64 +2088,71 @@ function renderOrden() {
   }
   empty.style.display = 'none';
 
-  container.innerHTML = ordenItems.map(({ producto: p, qty }) => {
+  // Solo re-renderizar cards que no existen todavía
+  const existingSkus = new Set([...container.querySelectorAll('[data-orden-sku]')].map(el => el.dataset.ordenSku));
+  
+  // Agregar cards nuevas
+  ordenItems.forEach(({ producto: p, qty }) => {
+    if (existingSkus.has(String(p.Sku))) return; // ya existe, no re-renderizar
+
     const precio = p.Precio != null ? '$' + Number(p.Precio).toFixed(2) : 'N/D';
     const precioUd = (p.Precio && p.Unidades) ? '$' + (p.Precio / p.Unidades).toFixed(2) + '/ud' : '';
     const imgSrc = p.Imagen ? `images/${p.Imagen}` : '';
     const upc = (p.UPC || '').toString().replace(/\.0$/, '').trim();
     const bcId = 'bc-' + p.Sku;
 
-    return `
-      <div class="orden-card">
-        <div class="orden-card-top">
-          ${imgSrc
-            ? `<img class="orden-card-img" src="${imgSrc}" onerror="this.style.display='none'">`
-            : '<div class="orden-card-img" style="display:flex;align-items:center;justify-content:center;font-size:32px;">📦</div>'}
-          <div class="orden-card-info">
-            <div class="orden-card-sku">SKU ${p.Sku}</div>
-            <div class="orden-card-name">${p.Nombre || ''}</div>
-            <div class="orden-card-prices">
-              <div class="orden-card-price-caja">${precio}</div>
-              ${precioUd ? `<div class="orden-card-price-ud">${precioUd}</div>` : ''}
-            </div>
-            <div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
-              <button onclick="cambiarQty('${p.Sku}', -1)" style="width:26px;height:26px;border-radius:50%;background:var(--border);border:none;color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">−</button>
-              <input type="number" value="${qty}" min="1"
-                onchange="setQty('${p.Sku}', this.value)"
-                style="width:44px;text-align:center;background:var(--dark);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;padding:3px;outline:none;-webkit-appearance:none;">
-              <button onclick="cambiarQty('${p.Sku}', 1)" style="width:26px;height:26px;border-radius:50%;background:var(--red);border:none;color:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">+</button>
-              <span style="font-size:11px;color:var(--muted);">cajas</span>
-            </div>
+    const card = document.createElement('div');
+    card.className = 'orden-card';
+    card.dataset.ordenSku = p.Sku;
+    card.innerHTML = `
+      <div class="orden-card-top">
+        ${imgSrc
+          ? `<img class="orden-card-img" src="${imgSrc}" onerror="this.style.display='none'">`
+          : '<div class="orden-card-img" style="display:flex;align-items:center;justify-content:center;font-size:32px;">📦</div>'}
+        <div class="orden-card-info">
+          <div class="orden-card-sku">SKU ${p.Sku}</div>
+          <div class="orden-card-name">${p.Nombre || ''}</div>
+          <div class="orden-card-prices">
+            <div class="orden-card-price-caja">${precio}</div>
+            ${precioUd ? `<div class="orden-card-price-ud">${precioUd}</div>` : ''}
           </div>
-          <button class="orden-card-remove" onclick="removeFromOrden('${p.Sku}')">✕</button>
+          <div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
+            <button onclick="cambiarQty('${p.Sku}', -1)" style="width:26px;height:26px;border-radius:50%;background:var(--border);border:none;color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">−</button>
+            <input type="number" value="${qty}" min="1" data-qty-sku="${p.Sku}"
+              onchange="setQty('${p.Sku}', this.value)"
+              style="width:44px;text-align:center;background:var(--dark);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;padding:3px;outline:none;-webkit-appearance:none;">
+            <button onclick="cambiarQty('${p.Sku}', 1)" style="width:26px;height:26px;border-radius:50%;background:var(--red);border:none;color:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">+</button>
+            <span style="font-size:11px;color:var(--muted);">cajas</span>
+          </div>
         </div>
-        <div class="orden-barcode-wrap">
-          ${upc
-            ? `<svg id="${bcId}" style="width:100%;max-width:280px;"></svg><div class="orden-barcode-num">${upc}</div>`
-            : `<div style="font-size:12px;color:#aaa;padding:8px;">Sin UPC registrado</div>`}
-        </div>
+        <button class="orden-card-remove" onclick="removeFromOrden('${p.Sku}')">✕</button>
+      </div>
+      <div class="orden-barcode-wrap">
+        ${upc
+          ? `<svg id="${bcId}" style="width:100%;max-width:280px;"></svg><div class="orden-barcode-num">${upc}</div>`
+          : `<div style="font-size:12px;color:#aaa;padding:8px;">Sin UPC registrado</div>`}
       </div>`;
-  }).join('');
+    container.appendChild(card);
 
-  // Generar barcodes
-  ordenItems.forEach(({ producto: p }) => {
-    const upc = (p.UPC || '').toString().replace(/\.0$/, '').trim();
-    if (!upc) return;
-    const el = document.getElementById('bc-' + p.Sku);
-    if (!el) return;
-    try {
-      JsBarcode(el, upc, {
-        format: upc.length === 12 ? 'UPC' : upc.length === 13 ? 'EAN13' : 'CODE128',
-        width: 2.5,
-        height: 70,
-        displayValue: false,
-        margin: 8,
-        background: '#ffffff',
-        lineColor: '#000000'
-      });
-    } catch(e) {
-      try { JsBarcode(el, upc, { format:'CODE128', width:2.5, height:70, displayValue:false, margin:8, background:'#ffffff', lineColor:'#000000' }); }
-      catch(e2) {}
+    // Generar barcode solo una vez al crear la card
+    if (upc) {
+      setTimeout(() => {
+        const el = document.getElementById(bcId);
+        if (!el) return;
+        try {
+          JsBarcode(el, upc, { format: upc.length === 12 ? 'UPC' : upc.length === 13 ? 'EAN13' : 'CODE128', width:2.5, height:70, displayValue:false, margin:8, background:'#ffffff', lineColor:'#000000' });
+        } catch(e) {
+          try { JsBarcode(el, upc, { format:'CODE128', width:2.5, height:70, displayValue:false, margin:8, background:'#ffffff', lineColor:'#000000' }); }
+          catch(e2) {}
+        }
+      }, 50);
+    }
+  });
+
+  // Eliminar cards que ya no están en la orden
+  container.querySelectorAll('[data-orden-sku]').forEach(el => {
+    if (!ordenItems.find(i => String(i.producto.Sku) === el.dataset.ordenSku)) {
+      el.remove();
     }
   });
 }
