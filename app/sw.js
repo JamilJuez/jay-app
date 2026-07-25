@@ -1,5 +1,5 @@
 // sw.js — Service Worker para uso offline
-const CACHE = 'catalogo-v36';
+const CACHE = 'catalogo-v37';
 const IMG_CACHE = 'imagenes-v1'; // Cache separado para imagenes — nunca se borra
 
 self.addEventListener('install', e => {
