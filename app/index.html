@@ -2117,36 +2117,18 @@ function renderOrden() {
             ${precioUd ? `<div class="orden-card-price-ud">${precioUd}</div>` : ''}
           </div>
           <div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
-            <button onclick="cambiarQty('${p.Sku}', -1)" style="width:26px;height:26px;border-radius:50%;background:var(--border);border:none;color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">−</button>
+            <button onclick="cambiarQty('${p.Sku}', -1)" style="width:28px;height:28px;border-radius:50%;background:var(--border);border:none;color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">−</button>
             <input type="number" value="${qty}" min="1" data-qty-sku="${p.Sku}"
               onchange="setQty('${p.Sku}', this.value)"
-              style="width:44px;text-align:center;background:var(--dark);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;padding:3px;outline:none;-webkit-appearance:none;">
-            <button onclick="cambiarQty('${p.Sku}', 1)" style="width:26px;height:26px;border-radius:50%;background:var(--red);border:none;color:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">+</button>
+              style="width:48px;text-align:center;background:var(--dark);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;padding:4px;outline:none;-webkit-appearance:none;">
+            <button onclick="cambiarQty('${p.Sku}', 1)" style="width:28px;height:28px;border-radius:50%;background:var(--red);border:none;color:white;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">+</button>
             <span style="font-size:11px;color:var(--muted);">cajas</span>
+            ${upc ? `<button onclick="openBarcodeModalForProduct(${JSON.stringify({Nombre:p.Nombre,Sku:p.Sku,UPC:upc})})" style="margin-left:4px;background:var(--dark);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:3px 8px;font-size:11px;cursor:pointer;">📊</button>` : ''}
           </div>
         </div>
         <button class="orden-card-remove" onclick="removeFromOrden('${p.Sku}')">✕</button>
-      </div>
-      <div class="orden-barcode-wrap">
-        ${upc
-          ? `<svg id="${bcId}" style="width:100%;max-width:280px;"></svg><div class="orden-barcode-num">${upc}</div>`
-          : `<div style="font-size:12px;color:#aaa;padding:8px;">Sin UPC registrado</div>`}
       </div>`;
     container.appendChild(card);
-
-    // Generar barcode solo una vez al crear la card
-    if (upc) {
-      setTimeout(() => {
-        const el = document.getElementById(bcId);
-        if (!el) return;
-        try {
-          JsBarcode(el, upc, { format: upc.length === 12 ? 'UPC' : upc.length === 13 ? 'EAN13' : 'CODE128', width:2.5, height:70, displayValue:false, margin:8, background:'#ffffff', lineColor:'#000000' });
-        } catch(e) {
-          try { JsBarcode(el, upc, { format:'CODE128', width:2.5, height:70, displayValue:false, margin:8, background:'#ffffff', lineColor:'#000000' }); }
-          catch(e2) {}
-        }
-      }, 50);
-    }
   });
 
   // Eliminar cards que ya no están en la orden
