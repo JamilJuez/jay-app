@@ -1366,23 +1366,45 @@ html, body {
 
 <!-- Order Page -->
 <div class="page" id="ordenPage">
-  <div style="padding: 14px 12px calc(var(--safe-bottom) + 80px);">
 
-    <!-- Header -->
+  <!-- Vista: Lista de órdenes -->
+  <div id="ordenListaView" style="padding:14px 12px calc(var(--safe-bottom) + 80px);">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--red);">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;text-transform:uppercase;color:var(--text);letter-spacing:1px;">🛒 Orden</div>
-      <button onclick="clearOrden()" style="background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:5px 12px;font-size:12px;font-family:'Barlow',sans-serif;cursor:pointer;">Limpiar</button>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:800;text-transform:uppercase;color:var(--text);letter-spacing:1px;">🛒 Órdenes</div>
+      <button onclick="nuevaOrden()" style="background:var(--red);border:none;color:white;border-radius:8px;padding:7px 14px;font-size:13px;font-family:'Barlow Condensed',sans-serif;font-weight:700;cursor:pointer;letter-spacing:0.5px;">+ Nueva</button>
+    </div>
+    <div id="ordenListaItems"></div>
+    <div id="ordenListaEmpty" style="text-align:center;padding:50px 20px;color:var(--muted);">
+      <div style="font-size:48px;margin-bottom:12px;opacity:0.4;">🛒</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;">Sin órdenes</div>
+      <div style="font-size:13px;margin-top:6px;">Toca "+ Nueva" para crear una orden</div>
+    </div>
+  </div>
+
+  <!-- Vista: Orden activa -->
+  <div id="ordenActivaView" style="display:none;padding:14px 12px calc(var(--safe-bottom) + 80px);">
+    <!-- Header -->
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--red);">
+      <button onclick="volverALista()" style="background:transparent;border:none;color:var(--muted);font-size:22px;cursor:pointer;padding:0;line-height:1;">‹</button>
+      <div style="flex:1;font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;text-transform:uppercase;color:var(--text);letter-spacing:1px;" id="ordenActivaTitulo">Nueva Orden</div>
+      <button onclick="borrarOrdenActiva()" style="background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:5px 10px;font-size:11px;font-family:'Barlow',sans-serif;cursor:pointer;">Borrar</button>
     </div>
 
-    <!-- Search box -->
+    <!-- Cliente -->
+    <input id="ordenCliente" type="text" placeholder="Nombre de tienda o # de customer..."
+      oninput="guardarOrdenActual()"
+      style="width:100%;background:var(--dark);border:1.5px solid var(--border);border-radius:12px;
+      color:var(--text);font-family:'Barlow',sans-serif;font-size:15px;padding:13px 16px;
+      outline:none;-webkit-appearance:none;box-sizing:border-box;margin-bottom:10px;">
+
+    <!-- SKU + Cantidad -->
     <div style="display:flex;gap:8px;margin-bottom:14px;">
       <input id="ordenSearch" type="number" inputmode="numeric" placeholder="SKU..."
         style="flex:1;background:var(--dark);border:1.5px solid var(--border);border-radius:12px;
         color:var(--text);font-family:'Barlow',sans-serif;font-size:16px;padding:13px 16px;
         outline:none;-webkit-appearance:none;box-sizing:border-box;"
         oninput="buscarProductoOrden(this.value)">
-      <input id="ordenQtyInput" type="number" inputmode="numeric" placeholder="1"
-        min="1"
+      <input id="ordenQtyInput" type="number" inputmode="numeric" placeholder="1" min="1"
         style="width:70px;background:var(--dark);border:1.5px solid var(--border);border-radius:12px;
         color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;
         padding:13px 10px;text-align:center;outline:none;-webkit-appearance:none;box-sizing:border-box;">
@@ -1395,13 +1417,13 @@ html, body {
     <div id="ordenItems"></div>
 
     <!-- Empty state -->
-    <div id="ordenEmpty" style="text-align:center;padding:50px 20px;color:var(--muted);">
-      <div style="font-size:48px;margin-bottom:12px;opacity:0.4;">🛒</div>
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;">Orden vacía</div>
-      <div style="font-size:13px;margin-top:6px;">Escribe el SKU y la cantidad, luego toca el producto</div>
+    <div id="ordenEmpty" style="text-align:center;padding:40px 20px;color:var(--muted);">
+      <div style="font-size:40px;margin-bottom:10px;opacity:0.4;">📦</div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;">Orden vacía</div>
+      <div style="font-size:12px;margin-top:6px;">Escribe el SKU para agregar productos</div>
     </div>
-
   </div>
+
 </div>
 
 <!-- Bottom Nav -->
@@ -1560,6 +1582,9 @@ async function init() {
     document.getElementById('mainHeader').style.display = 'block';
     document.getElementById('bottomNav').style.display  = 'flex';
     setTimeout(() => document.getElementById('loadingScreen').remove(), 500);
+
+    // Restaurar lista de órdenes al iniciar
+    renderOrdenLista();
   } catch(e) {
     document.querySelector('.loading-text').textContent = 'Error cargando datos';
     console.error(e);
@@ -1827,7 +1852,123 @@ function closeModal(e) {
 }
 
 // ── ORDEN ─────────────────────────────────────────────
-let ordenItems = []; // [{producto, qty}]
+let ordenItems = [];
+let ordenActualId = null;
+
+function getOrdenes() {
+  try { return JSON.parse(localStorage.getItem('jayapp_ordenes') || '{}'); } catch(e) { return {}; }
+}
+
+function saveOrdenes(ordenes) {
+  localStorage.setItem('jayapp_ordenes', JSON.stringify(ordenes));
+}
+
+function nuevaOrden() {
+  const id = 'orden_' + Date.now();
+  ordenActualId = id;
+  ordenItems = [];
+  document.getElementById('ordenCliente').value = '';
+  document.getElementById('ordenSearch').value = '';
+  document.getElementById('ordenQtyInput').value = '';
+  document.getElementById('ordenResults').innerHTML = '';
+  document.getElementById('ordenActivaTitulo').textContent = 'Nueva Orden';
+  document.getElementById('ordenListaView').style.display = 'none';
+  document.getElementById('ordenActivaView').style.display = 'block';
+  renderOrden();
+}
+
+function abrirOrden(id) {
+  const ordenes = getOrdenes();
+  const o = ordenes[id];
+  if (!o) return;
+  ordenActualId = id;
+  ordenItems = (o.items || []).map(i => {
+    const p = allProducts.find(x => String(x.Sku) === String(i.sku));
+    return p ? { producto: p, qty: i.qty } : null;
+  }).filter(Boolean);
+  document.getElementById('ordenCliente').value = o.cliente || '';
+  document.getElementById('ordenSearch').value = '';
+  document.getElementById('ordenQtyInput').value = '';
+  document.getElementById('ordenResults').innerHTML = '';
+  document.getElementById('ordenActivaTitulo').textContent = o.cliente || 'Sin nombre';
+  document.getElementById('ordenListaView').style.display = 'none';
+  document.getElementById('ordenActivaView').style.display = 'block';
+  renderOrden();
+}
+
+function volverALista() {
+  guardarOrdenActual();
+  document.getElementById('ordenActivaView').style.display = 'none';
+  document.getElementById('ordenListaView').style.display = 'block';
+  renderOrdenLista();
+}
+
+function guardarOrdenActual() {
+  if (!ordenActualId) return;
+  const cliente = document.getElementById('ordenCliente')?.value || '';
+  const ordenes = getOrdenes();
+  // Limpiar órdenes de más de 7 días
+  const ahora = Date.now();
+  Object.keys(ordenes).forEach(k => {
+    if (ahora - ordenes[k].ts > 7 * 24 * 60 * 60 * 1000) delete ordenes[k];
+  });
+  ordenes[ordenActualId] = {
+    cliente,
+    items: ordenItems.map(i => ({ sku: i.producto.Sku, qty: i.qty })),
+    ts: ahora
+  };
+  saveOrdenes(ordenes);
+  // Actualizar título
+  document.getElementById('ordenActivaTitulo').textContent = cliente || 'Sin nombre';
+}
+
+function borrarOrdenActiva() {
+  if (!confirm('¿Borrar esta orden?')) return;
+  const ordenes = getOrdenes();
+  delete ordenes[ordenActualId];
+  saveOrdenes(ordenes);
+  ordenActualId = null;
+  ordenItems = [];
+  document.getElementById('ordenActivaView').style.display = 'none';
+  document.getElementById('ordenListaView').style.display = 'block';
+  renderOrdenLista();
+}
+
+function renderOrdenLista() {
+  const ordenes = getOrdenes();
+  const container = document.getElementById('ordenListaItems');
+  const empty = document.getElementById('ordenListaEmpty');
+  const keys = Object.keys(ordenes).sort((a, b) => ordenes[b].ts - ordenes[a].ts);
+
+  if (keys.length === 0) {
+    container.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  container.innerHTML = keys.map(id => {
+    const o = ordenes[id];
+    const fecha = new Date(o.ts).toLocaleDateString('es', {day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'});
+    const total = (o.items || []).reduce((s, i) => s + i.qty, 0);
+    return `
+      <div onclick="abrirOrden('${id}')" style="
+        background:var(--card);border:1px solid var(--border);border-radius:14px;
+        padding:14px 16px;margin-bottom:10px;cursor:pointer;
+        display:flex;align-items:center;justify-content:space-between;gap:12px;">
+        <div style="flex:1;min-width:0;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;
+            color:var(--text);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+            ${o.cliente || 'Sin nombre'}
+          </div>
+          <div style="font-size:11px;color:var(--muted);margin-top:3px;">${fecha} · ${total} caja${total !== 1 ? 's' : ''} · ${(o.items||[]).length} producto${(o.items||[]).length !== 1 ? 's' : ''}</div>
+        </div>
+        <div style="color:var(--muted);font-size:20px;">›</div>
+      </div>`;
+  }).join('');
+}
+
+function guardarOrdenLocal() { guardarOrdenActual(); } // [{producto, qty}]
 
 function showPage(page) {
   currentPage = page;
@@ -1842,7 +1983,7 @@ function showPage(page) {
   document.getElementById('navPromos').classList.toggle('active',  page === 'promos');
   document.getElementById('navOrden').classList.toggle('active',   page === 'orden');
   if (page === 'promos' && allProducts.length > 0) renderSpecCat();
-  if (page === 'orden') renderOrden();
+  if (page === 'orden') renderOrdenLista();
 }
 
 function buscarProductoOrden(val) {
@@ -1896,6 +2037,7 @@ function agregarAOrden(sku) {
 
   updateOrdenBadge();
   renderOrden();
+  guardarOrdenActual();
 }
 
 function cambiarQty(sku, delta) {
@@ -1903,6 +2045,7 @@ function cambiarQty(sku, delta) {
   if (!item) return;
   item.qty = Math.max(1, item.qty + delta);
   renderOrden();
+  guardarOrdenActual();
 }
 
 function setQty(sku, val) {
@@ -1910,20 +2053,22 @@ function setQty(sku, val) {
   if (!item) return;
   const n = parseInt(val);
   item.qty = isNaN(n) || n < 1 ? 1 : n;
+  guardarOrdenActual();
 }
 
 function removeFromOrden(sku) {
   ordenItems = ordenItems.filter(i => String(i.producto.Sku) !== String(sku));
   updateOrdenBadge();
   renderOrden();
+  guardarOrdenActual();
 }
 
 function clearOrden() {
   if (ordenItems.length === 0) return;
-  if (!confirm('¿Limpiar toda la orden?')) return;
+  if (!confirm('¿Limpiar esta orden?')) return;
   ordenItems = [];
-  updateOrdenBadge();
   renderOrden();
+  guardarOrdenActual();
 }
 
 function updateOrdenBadge() {
