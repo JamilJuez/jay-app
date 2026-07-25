@@ -29,9 +29,9 @@
   --safe-top:    env(safe-area-inset-top, 0px);
   --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
-
+ 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
+ 
 html, body {
   height: 100%;
   background: var(--black);
@@ -40,7 +40,7 @@ html, body {
   -webkit-tap-highlight-color: transparent;
   overscroll-behavior: none;
 }
-
+ 
 /* ── HEADER ───────────────────────────────────────── */
 .header {
   position: sticky;
@@ -50,14 +50,14 @@ html, body {
   border-bottom: 2px solid var(--red);
   padding-top: var(--safe-top);
 }
-
+ 
 .header-top {
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px 14px 8px;
 }
-
+ 
 .logo-wrap {
   width: 42px;
   height: 42px;
@@ -70,18 +70,18 @@ html, body {
   overflow: hidden;
   box-shadow: 0 0 0 2px var(--red-dark), 0 0 16px rgba(192,0,10,0.4);
 }
-
+ 
 .logo-wrap img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
-
+ 
 .header-titles {
   flex: 1;
   min-width: 0;
 }
-
+ 
 .app-title {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 22px;
@@ -91,14 +91,14 @@ html, body {
   line-height: 1;
   text-transform: uppercase;
 }
-
+ 
 .app-subtitle {
   font-size: 11px;
   color: var(--muted);
   letter-spacing: 0.5px;
   margin-top: 2px;
 }
-
+ 
 .stats-badge {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 12px;
@@ -110,13 +110,13 @@ html, body {
   padding: 3px 10px;
   white-space: nowrap;
 }
-
+ 
 /* ── SEARCH ───────────────────────────────────────── */
 .search-wrap {
   padding: 0 12px 10px;
   position: relative;
 }
-
+ 
 .search-input {
   width: 100%;
   background: var(--dark);
@@ -130,10 +130,10 @@ html, body {
   transition: border-color 0.2s;
   -webkit-appearance: none;
 }
-
+ 
 .search-input:focus { border-color: var(--red); }
 .search-input::placeholder { color: var(--muted); }
-
+ 
 .search-icon {
   position: absolute;
   right: 24px;
@@ -143,7 +143,7 @@ html, body {
   font-size: 16px;
   pointer-events: none;
 }
-
+ 
 .search-clear {
   position: absolute;
   right: 24px;
@@ -162,7 +162,7 @@ html, body {
   justify-content: center;
   line-height: 1;
 }
-
+ 
 /* ── FILTER BAR ───────────────────────────────────── */
 .filter-bar {
   display: flex;
@@ -170,12 +170,12 @@ html, body {
   padding: 0 12px 10px;
   align-items: center;
 }
-
+ 
 .cat-select-wrap {
   position: relative;
   flex: 1;
 }
-
+ 
 .cat-select {
   width: 100%;
   background: var(--dark);
@@ -196,7 +196,7 @@ html, body {
 }
 .cat-select:focus { border-color: var(--red); }
 .cat-select.active { border-color: var(--red); color: var(--red-light); }
-
+ 
 .cat-select-arrow {
   position: absolute;
   right: 12px;
@@ -206,7 +206,7 @@ html, body {
   color: var(--muted);
   font-size: 12px;
 }
-
+ 
 .new-btn {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 13px;
@@ -236,7 +236,7 @@ html, body {
   padding: 1px 6px;
   font-size: 11px;
 }
-
+ 
 /* ── SUBCATEGORY BAR ──────────────────────────────── */
 .subcat-bar {
   display: none;
@@ -250,7 +250,7 @@ html, body {
 }
 .subcat-bar::-webkit-scrollbar { display: none; }
 .subcat-bar.visible { display: flex; }
-
+ 
 .subcat-btn {
   font-family: 'Barlow', sans-serif;
   font-size: 12px;
@@ -265,13 +265,13 @@ html, body {
   transition: all 0.15s;
   -webkit-appearance: none;
 }
-
+ 
 .subcat-btn.active {
   background: rgba(192,0,10,0.15);
   border-color: var(--red);
   color: var(--red-light);
 }
-
+ 
 /* ── RESULT COUNT ─────────────────────────────────── */
 .result-count {
   padding: 4px 14px 6px;
@@ -279,7 +279,7 @@ html, body {
   color: var(--muted);
   letter-spacing: 0.3px;
 }
-
+ 
 /* ── GRID ─────────────────────────────────────────── */
 .grid {
   display: grid;
@@ -287,7 +287,7 @@ html, body {
   gap: 10px;
   padding: 4px 10px calc(var(--safe-bottom) + 80px);
 }
-
+ 
 /* ── PRODUCT CARD ─────────────────────────────────── */
 .card {
   background: var(--card);
@@ -301,9 +301,9 @@ html, body {
   -webkit-tap-highlight-color: transparent;
   position: relative;
 }
-
+ 
 .card:active { transform: scale(0.97); }
-
+ 
 .card-img-wrap {
   aspect-ratio: 1;
   background: #ffffff;
@@ -311,7 +311,7 @@ html, body {
   overflow: hidden;
   position: relative;
 }
-
+ 
 .card-img {
   width: 100%;
   height: 100%;
@@ -320,9 +320,9 @@ html, body {
   transition: opacity 0.2s;
   background: #ffffff;
 }
-
+ 
 .card-img.loading { opacity: 0; }
-
+ 
 .img-placeholder {
   position: absolute;
   inset: 0;
@@ -333,7 +333,7 @@ html, body {
   color: var(--border);
   background: #ffffff;
 }
-
+ 
 .badge-new {
   position: absolute;
   top: 6px;
@@ -349,7 +349,7 @@ html, body {
   text-transform: uppercase;
   z-index: 2;
 }
-
+ 
 .badge-out {
   position: absolute;
   top: 6px;
@@ -363,7 +363,7 @@ html, body {
   border-radius: 4px;
   border: 1px solid #ff4444;
 }
-
+ 
 .card-body {
   padding: 8px 10px 10px;
   flex: 1;
@@ -371,7 +371,7 @@ html, body {
   flex-direction: column;
   gap: 4px;
 }
-
+ 
 .card-sku {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 12px;
@@ -379,7 +379,7 @@ html, body {
   font-weight: 700;
   letter-spacing: 0.5px;
 }
-
+ 
 .card-name {
   font-size: 13px;
   font-weight: 600;
@@ -390,12 +390,12 @@ html, body {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
-
+ 
 .card-size {
   font-size: 11px;
   color: #AAAAAA;
 }
-
+ 
 .card-footer {
   display: flex;
   align-items: center;
@@ -403,30 +403,30 @@ html, body {
   margin-top: auto;
   padding-top: 4px;
 }
-
+ 
 .card-price {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 20px;
   font-weight: 800;
   color: #FF6B6B;
 }
-
+ 
 .card-price.no-price {
   font-size: 12px;
   color: var(--muted);
   font-weight: 400;
   font-family: 'Barlow', sans-serif;
 }
-
+ 
 .card-inv {
   font-size: 12px;
   color: #CCCCCC;
   text-align: right;
 }
-
+ 
 .card-inv.low { color: #ff8800; }
 .card-inv.out { color: #ff4444; }
-
+ 
 /* ── DETAIL MODAL ─────────────────────────────────── */
 .modal-overlay {
   position: fixed;
@@ -440,12 +440,12 @@ html, body {
   transition: opacity 0.25s;
   backdrop-filter: blur(4px);
 }
-
+ 
 .modal-overlay.open {
   opacity: 1;
   pointer-events: all;
 }
-
+ 
 .modal {
   background: var(--dark);
   border-radius: 24px 24px 0 0;
@@ -457,11 +457,11 @@ html, body {
   transform: translateY(100%);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
-
+ 
 .modal-overlay.open .modal {
   transform: translateY(0);
 }
-
+ 
 .modal-handle {
   width: 40px;
   height: 4px;
@@ -469,7 +469,7 @@ html, body {
   border-radius: 2px;
   margin: 12px auto 0;
 }
-
+ 
 .modal-img-wrap {
   width: 60%;
   max-width: 220px;
@@ -482,7 +482,7 @@ html, body {
   align-items: center;
   justify-content: center;
 }
-
+ 
 .modal-img {
   width: 100%;
   height: 100%;
@@ -490,11 +490,11 @@ html, body {
   padding: 12px;
   cursor: zoom-in;
 }
-
+ 
 .modal-body {
   padding: 0 20px 16px;
 }
-
+ 
 .modal-sku {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 13px;
@@ -503,7 +503,7 @@ html, body {
   letter-spacing: 1px;
   text-transform: uppercase;
 }
-
+ 
 .modal-name {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 24px;
@@ -513,21 +513,21 @@ html, body {
   margin: 4px 0 8px;
   text-transform: uppercase;
 }
-
+ 
 .modal-cat {
   font-size: 12px;
   color: var(--muted);
   margin-bottom: 16px;
   line-height: 1.4;
 }
-
+ 
 .modal-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
   margin-bottom: 16px;
 }
-
+ 
 .stat-box {
   background: var(--card);
   border: 1px solid var(--border);
@@ -535,7 +535,7 @@ html, body {
   padding: 10px 8px;
   text-align: center;
 }
-
+ 
 .stat-val {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 22px;
@@ -543,10 +543,10 @@ html, body {
   color: var(--text);
   line-height: 1;
 }
-
+ 
 .stat-val.red { color: var(--red-light); }
 .stat-val.gold { color: var(--gold); }
-
+ 
 .stat-label {
   font-size: 10px;
   color: var(--muted);
@@ -554,7 +554,7 @@ html, body {
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
-
+ 
 .modal-close {
   display: block;
   width: 100%;
@@ -573,7 +573,7 @@ html, body {
   transition: background 0.15s;
 }
 .modal-close:active { background: var(--red-dark); }
-
+ 
 /* ── PROMO BANNER ─────────────────────────────────── */
 .promo-strip {
   margin: 0 10px 8px;
@@ -594,7 +594,7 @@ html, body {
   border-radius: 12px;
   display: none;
 }
-
+ 
 /* ── EMPTY STATE ──────────────────────────────────── */
 .empty {
   display: none;
@@ -610,7 +610,7 @@ html, body {
 .empty-icon { font-size: 48px; opacity: 0.4; }
 .empty-title { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; }
 .empty-sub { font-size: 13px; }
-
+ 
 /* ── BOTTOM NAV ───────────────────────────────────── */
 .bottom-nav {
   position: fixed;
@@ -623,7 +623,7 @@ html, body {
   padding-bottom: var(--safe-bottom);
   z-index: 100;
 }
-
+ 
 .nav-btn {
   flex: 1;
   display: flex;
@@ -643,7 +643,7 @@ html, body {
 }
 .nav-btn.active { color: var(--red); }
 .nav-btn svg { width: 22px; height: 22px; }
-
+ 
 /* ── LOADING ──────────────────────────────────────── */
 .loading-screen {
   position: fixed;
@@ -658,7 +658,7 @@ html, body {
   transition: opacity 0.4s;
 }
 .loading-screen.hidden { opacity: 0; pointer-events: none; }
-
+ 
 .loading-logo {
   width: 80px;
   height: 80px;
@@ -672,12 +672,12 @@ html, body {
   animation: pulse 1.5s ease-in-out infinite;
 }
 .loading-logo img { width: 100%; height: 100%; object-fit: cover; }
-
+ 
 @keyframes pulse {
   0%, 100% { box-shadow: 0 0 20px rgba(192,0,10,0.4); }
   50% { box-shadow: 0 0 50px rgba(192,0,10,0.8); }
 }
-
+ 
 .loading-text {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 14px;
@@ -685,7 +685,7 @@ html, body {
   color: var(--muted);
   text-transform: uppercase;
 }
-
+ 
 .loading-bar {
   width: 120px;
   height: 3px;
@@ -704,15 +704,15 @@ html, body {
   50% { width: 60%; margin-left: 20%; }
   100% { width: 0%; margin-left: 100%; }
 }
-
+ 
 /* ── PROMOS PAGE ──────────────────────────────────── */
 .page { display: none; }
 .page.active { display: block; }
-
+ 
 .promos-page {
   padding: 14px 12px calc(var(--safe-bottom) + 80px);
 }
-
+ 
 .promos-header {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 28px;
@@ -724,7 +724,7 @@ html, body {
   padding-bottom: 10px;
   border-bottom: 2px solid var(--red);
 }
-
+ 
 .promo-card {
   background: var(--card);
   border: 1px solid var(--border);
@@ -732,17 +732,17 @@ html, body {
   overflow: hidden;
   margin-bottom: 12px;
 }
-
+ 
 .promo-card img {
   width: 100%;
   height: auto;
   display: block;
 }
-
+ 
 .promo-card-body {
   padding: 12px 14px;
 }
-
+ 
 .promo-card-title {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 18px;
@@ -750,14 +750,14 @@ html, body {
   color: var(--text);
   text-transform: uppercase;
 }
-
+ 
 .promo-card-desc {
   font-size: 13px;
   color: var(--muted);
   margin-top: 4px;
   line-height: 1.4;
 }
-
+ 
 .no-promos {
   text-align: center;
   padding: 60px 20px;
@@ -766,8 +766,8 @@ html, body {
 .no-promos-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.4; }
 .no-promos-text { font-family: 'Barlow Condensed', sans-serif; font-size: 20px; font-weight: 700; }
 .no-promos-sub { font-size: 13px; margin-top: 6px; }
-
-
+ 
+ 
 /* ── FULLSCREEN IMAGE VIEWER ──────────────────────────── */
 .img-viewer {
   position: fixed;
@@ -798,7 +798,7 @@ html, body {
   padding: 16px;
   box-shadow: 0 20px 60px rgba(0,0,0,0.4);
 }
-
+ 
 .img-viewer img {
   max-width: 100%;
   max-height: 100%;
@@ -826,8 +826,8 @@ html, body {
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
-
-
+ 
+ 
 /* ── SHARE BUTTON ─────────────────────────────────── */
 .share-btn {
   position: absolute;
@@ -851,8 +851,8 @@ html, body {
   height: 15px;
   fill: white;
 }
-
-
+ 
+ 
 /* ── DISCOUNT MODAL ───────────────────────────────── */
 .discount-overlay {
   position: fixed;
@@ -990,8 +990,8 @@ html, body {
   justify-content: center;
   gap: 6px;
 }
-
-
+ 
+ 
 /* ── SCROLL TO TOP ────────────────────────────────── */
 .scroll-top {
   position: fixed;
@@ -1019,8 +1019,8 @@ html, body {
   opacity: 1;
   pointer-events: all;
 }
-
-
+ 
+ 
 /* ── SPECIAL CATEGORIES ───────────────────────────── */
 .spec-tab {
   font-family: 'Barlow Condensed', sans-serif;
@@ -1054,8 +1054,8 @@ html, body {
 }
 .spec-empty-icon { font-size: 40px; margin-bottom: 10px; opacity: 0.4; }
 .spec-empty-text { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 700; }
-
-
+ 
+ 
 /* ── ORDEN PAGE ───────────────────────────────────── */
 .orden-result-item {
   display:flex;align-items:center;gap:10px;background:var(--card);
@@ -1077,7 +1077,7 @@ html, body {
 .orden-card-price-caja { font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:#FF6B6B; }
 .orden-card-price-ud { font-size:12px;color:var(--muted); }
 .orden-card-remove { background:transparent;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:4px;line-height:1; }
-
+ 
 /* ── BARCODE MODAL ────────────────────────────────── */
 .barcode-overlay { position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:400;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.2s;padding:20px; }
 .barcode-overlay.open { opacity:1;pointer-events:all; }
@@ -1088,7 +1088,7 @@ html, body {
 .barcode-upc-text { font-family:monospace;font-size:13px;color:#333;letter-spacing:1px; }
 .barcode-close { width:100%;padding:12px;background:var(--red);border:none;border-radius:10px;color:white;font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;text-transform:uppercase;cursor:pointer;letter-spacing:1px; }
 .barcode-no-upc { font-size:13px;color:#888;text-align:center;padding:10px 0; }
-
+ 
 /* ── ANIMATIONS ───────────────────────────────────── */
 .card {
   animation: fadeIn 0.3s ease both;
@@ -1097,7 +1097,7 @@ html, body {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
+ 
 /* Stagger cards */
 .card:nth-child(1)  { animation-delay: 0.02s; }
 .card:nth-child(2)  { animation-delay: 0.04s; }
@@ -1108,8 +1108,8 @@ html, body {
 </style>
 </head>
 <body>
-
-
+ 
+ 
 <!-- Login Screen -->
 <div id="loginScreen" style="
   position:fixed;inset:0;background:#0D0D0D;z-index:1000;
@@ -1151,7 +1151,7 @@ html, body {
     </div>
   </div>
 </div>
-
+ 
 <!-- Loading Screen -->
 <div class="loading-screen" id="loadingScreen">
   <div class="loading-logo">
@@ -1160,7 +1160,7 @@ html, body {
   <div class="loading-text">Cargando catálogo...</div>
   <div class="loading-bar"><div class="loading-bar-fill"></div></div>
 </div>
-
+ 
 <!-- Header -->
 <header class="header" id="mainHeader" style="display:none">
   <div class="header-top">
@@ -1181,7 +1181,7 @@ html, body {
       ">Salir</button>
     </div>
   </div>
-
+ 
   <!-- Search (only on catalog page) -->
   <div class="search-wrap" id="searchWrap">
     <input class="search-input" type="search" id="searchInput"
@@ -1189,7 +1189,7 @@ html, body {
     <span class="search-icon" id="searchIcon">🔍</span>
     <button class="search-clear" id="searchClear">✕</button>
   </div>
-
+ 
   <!-- Category filter -->
   <div class="filter-bar" id="filterBar">
     <div class="cat-select-wrap">
@@ -1202,14 +1202,14 @@ html, body {
       ⭐ NEW <span class="new-count" id="newCount">0</span>
     </button>
   </div>
-
+ 
   <!-- Subcategory filter -->
   <div class="subcat-bar" id="subcatBar"></div>
-
+ 
   <!-- Result count -->
   <div class="result-count" id="resultCount"></div>
 </header>
-
+ 
 <!-- Catalog Page -->
 <div class="page active" id="catalogPage">
   <div class="grid" id="grid"></div>
@@ -1219,7 +1219,7 @@ html, body {
     <div class="empty-sub">Intenta con otro término o categoría</div>
   </div>
 </div>
-
+ 
 <!-- Special Categories Page -->
 <div class="page" id="promosPage">
   <div class="promos-page">
@@ -1233,11 +1233,11 @@ html, body {
       <button class="spec-tab" onclick="showSpecCat('restaurante')" id="tab-restaurante">🍽️ Restaurante</button>
       <button class="spec-tab" onclick="showSpecCat('kosher')" id="tab-kosher">✡️ Kosher</button>
     </div>
-
+ 
     <div id="specCatContent"></div>
   </div>
 </div>
-
+ 
 <!-- Bottom Nav -->
 <button class="scroll-top" id="scrollTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 <nav class="bottom-nav" id="bottomNav" style="display:none">
@@ -1263,8 +1263,8 @@ html, body {
     Orden
   </button>
 </nav>
-
-
+ 
+ 
 <!-- Order Page -->
 <div class="page" id="ordenPage">
   <div style="padding:14px 12px calc(var(--safe-bottom) + 80px);">
@@ -1296,7 +1296,7 @@ html, body {
     </div>
   </div>
 </div>
-
+ 
 <!-- Product Detail Modal -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal" id="modal">
@@ -1313,7 +1313,7 @@ html, body {
     </div>
   </div>
 </div>
-
+ 
 <!-- Discount Modal -->
 <div class="discount-overlay" id="discountOverlay">
   <div class="discount-modal">
@@ -1352,7 +1352,7 @@ html, body {
     </div>
   </div>
 </div>
-
+ 
 <!-- Fullscreen Image Viewer -->
 <div class="img-viewer" id="imgViewer">
   <button class="img-viewer-close" onclick="closeViewer()">✕</button>
@@ -1360,8 +1360,8 @@ html, body {
     <img id="viewerImg" src="" alt="">
   </div>
 </div>
-
-
+ 
+ 
 <!-- Barcode Modal -->
 <div class="barcode-overlay" id="barcodeOverlay" onclick="if(event.target===this)closeBarcodeModal()">
   <div class="barcode-modal">
@@ -1371,7 +1371,7 @@ html, body {
     <button class="barcode-close" onclick="closeBarcodeModal()">Cerrar</button>
   </div>
 </div>
-
+ 
 <script src="register-sw.js"></script>
 <script>
 // ── STATE ─────────────────────────────────────────────
@@ -1381,7 +1381,7 @@ let activeCat   = 'ALL';
 let activeSubcat = 'ALL';
 let searchQuery  = '';
 let currentPage  = 'catalog';
-
+ 
 // ── INIT ──────────────────────────────────────────────
 async function init() {
   try {
@@ -1396,17 +1396,17 @@ async function init() {
       document.getElementById('lastUpdate').textContent = 
         'Inventario al ' + parseInt(day) + ' ' + months[parseInt(month)-1] + ' ' + year;
     }
-
+ 
     // Build UI
     buildCategoryBar();
     applyFilters();
-
+ 
     // Update header info
     document.getElementById('statsBadge').textContent = allProducts.length.toLocaleString() + ' productos';
     const now = new Date();
     document.getElementById('lastUpdate').textContent =
       'Actualizado ' + now.toLocaleDateString('es', {day:'numeric', month:'short', year:'numeric'});
-
+ 
     // Show app
     document.getElementById('loadingScreen').classList.add('hidden');
     document.getElementById('mainHeader').style.display = 'block';
@@ -1417,10 +1417,10 @@ async function init() {
     console.error(e);
   }
 }
-
+ 
 // ── CATEGORIES ────────────────────────────────────────
 let showNewOnly = false;
-
+ 
 function buildCategoryBar() {
   const sel = document.getElementById('catSelect');
   const cats = [...new Set(allProducts.map(p => p.Categoria).filter(Boolean).sort())];
@@ -1430,12 +1430,12 @@ function buildCategoryBar() {
     opt.textContent = c;
     sel.appendChild(opt);
   });
-
+ 
   // Update new count badge
   const newCount = allProducts.filter(p => p.Estado === 'New').length;
   document.getElementById('newCount').textContent = newCount;
 }
-
+ 
 function selectCat(cat) {
   activeCat    = cat;
   activeSubcat = 'ALL';
@@ -1446,7 +1446,7 @@ function selectCat(cat) {
   buildSubcatBar(cat);
   applyFilters();
 }
-
+ 
 function toggleNew() {
   showNewOnly = !showNewOnly;
   document.getElementById('newBtn').classList.toggle('active', showNewOnly);
@@ -1460,7 +1460,7 @@ function toggleNew() {
   }
   applyFilters();
 }
-
+ 
 function buildSubcatBar(cat) {
   const bar = document.getElementById('subcatBar');
   if (cat === 'ALL') {
@@ -1477,7 +1477,7 @@ function buildSubcatBar(cat) {
   `).join('');
   bar.classList.add('visible');
 }
-
+ 
 function selectSubcat(subcat) {
   activeSubcat = subcat;
   document.querySelectorAll('.subcat-btn').forEach(b =>
@@ -1486,12 +1486,12 @@ function selectSubcat(subcat) {
   const activeBtn = document.querySelector('.subcat-btn.active');
   if (activeBtn) activeBtn.scrollIntoView({behavior:'smooth', block:'nearest', inline:'center'});
 }
-
+ 
 // ── SEARCH ────────────────────────────────────────────
 const searchInput = document.getElementById('searchInput');
 const searchClear = document.getElementById('searchClear');
 const searchIcon  = document.getElementById('searchIcon');
-
+ 
 searchInput.addEventListener('input', () => {
   searchQuery = searchInput.value.trim().toLowerCase();
   const hasVal = searchQuery.length > 0;
@@ -1499,7 +1499,7 @@ searchInput.addEventListener('input', () => {
   searchIcon.style.display  = hasVal ? 'none' : 'block';
   applyFilters();
 });
-
+ 
 searchClear.addEventListener('click', () => {
   searchInput.value = '';
   searchQuery = '';
@@ -1508,7 +1508,7 @@ searchClear.addEventListener('click', () => {
   searchInput.focus();
   applyFilters();
 });
-
+ 
 // ── FILTERS ───────────────────────────────────────────
 function applyFilters() {
   filtered = allProducts.filter(p => {
@@ -1525,31 +1525,31 @@ function applyFilters() {
     }
     return true;
   });
-
+ 
   document.getElementById('resultCount').textContent =
     filtered.length === allProducts.length
       ? '' : `${filtered.length.toLocaleString()} resultado${filtered.length !== 1 ? 's' : ''}`;
-
+ 
   renderGrid();
 }
-
+ 
 // ── RENDER GRID ───────────────────────────────────────
 function renderGrid() {
   const grid  = document.getElementById('grid');
   const empty = document.getElementById('emptyState');
-
+ 
   if (filtered.length === 0) {
     grid.innerHTML = '';
     empty.classList.add('show');
     return;
   }
   empty.classList.remove('show');
-
+ 
   // Render in batches for performance with 2000 items
   const BATCH = 40;
   let idx = 0;
   grid.innerHTML = '';
-
+ 
   function renderBatch() {
     const frag = document.createDocumentFragment();
     const end  = Math.min(idx + BATCH, filtered.length);
@@ -1562,24 +1562,24 @@ function renderGrid() {
   }
   renderBatch();
 }
-
+ 
 function createCard(p, i) {
   const div = document.createElement('div');
   div.className = 'card';
   div.style.animationDelay = Math.min(i * 0.02, 0.2) + 's';
-
+ 
   const inv = p.Disponible || 0;
   const isOut = inv === 0;
   const isLow = inv > 0 && inv <= 10;
-
+ 
   const imgSrc = p.Imagen ? `images/${p.Imagen}` : '';
   const precio = p.Precio != null
     ? '$' + Number(p.Precio).toLocaleString('en', {minimumFractionDigits:2, maximumFractionDigits:2})
     : null;
-
+ 
   const invClass = isOut ? 'out' : isLow ? 'low' : '';
   const invText  = isOut ? 'Sin stock' : inv.toLocaleString() + ' cases';
-
+ 
   div.innerHTML = `
     <div class="card-img-wrap">
       ${imgSrc ? `<img class="card-img loading" src="${imgSrc}" alt="${p.Nombre}"
@@ -1617,14 +1617,14 @@ function createCard(p, i) {
   div.addEventListener('click', () => openViewer(p.Imagen ? `images/${p.Imagen}` : ''));
   return div;
 }
-
+ 
 // ── MODAL ─────────────────────────────────────────────
 function openModal(p) {
   const overlay = document.getElementById('modalOverlay');
   const inv = p.Disponible || 0;
   const isOut = inv === 0;
   const isLow = inv > 0 && inv <= 10;
-
+ 
   const modalImgSrc = p.Imagen ? `images/${p.Imagen}` : '';
   document.getElementById('modalImg').src = modalImgSrc;
   document.getElementById('modalImg').onclick = () => openViewer(modalImgSrc);
@@ -1632,11 +1632,11 @@ function openModal(p) {
   document.getElementById('modalName').textContent = p.Nombre || '';
   document.getElementById('modalCat').textContent  =
     [p.Categoria, p.SubCategoria].filter(Boolean).join(' › ');
-
+ 
   const precio = p.Precio != null
     ? '$' + Number(p.Precio).toLocaleString('en', {minimumFractionDigits:2, maximumFractionDigits:2})
     : 'N/D';
-
+ 
   const invClass = isOut ? 'out' : isLow ? 'gold' : '';
   const statsHtml = `
     <div class="stat-box">
@@ -1656,13 +1656,13 @@ function openModal(p) {
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
-
+ 
 function closeModal(e) {
   if (e && e.target !== document.getElementById('modalOverlay')) return;
   document.getElementById('modalOverlay').classList.remove('open');
   document.body.style.overflow = '';
 }
-
+ 
 // ── PAGES ─────────────────────────────────────────────
 function showPage(page) {
   currentPage = page;
@@ -1678,7 +1678,7 @@ function showPage(page) {
   document.getElementById('navOrden').classList.toggle('active',   page === 'orden');
   if (page === 'promos' && allProducts.length > 0) renderSpecCat();
 }
-
+ 
 // ── SPECIAL CATEGORIES ────────────────────────────────
 const MARCAS_KEYWORDS = {
   'Moderna': ['moderna', 'la moderna', 'marianita', 'marianitas'],
@@ -1694,11 +1694,11 @@ const MARCAS_KEYWORDS = {
   'Ancel': ['ancel'],
   'Otros': ['la vina', 'cruz de malta', 'kirby', 'tres estrellas', '3 estrellas']
 };
-
+ 
 const KOSHER_SKUS = []; // Will be populated when list is available
-
+ 
 let activeSpecCat = 'marcas';
-
+ 
 function getSpecProducts(cat) {
   switch(cat) {
     case 'marcas':
@@ -1727,7 +1727,7 @@ function getSpecProducts(cat) {
       return [];
   }
 }
-
+ 
 function getMarcaLabel(nombre) {
   const n = nombre.toLowerCase();
   for (const [marca, keywords] of Object.entries(MARCAS_KEYWORDS)) {
@@ -1735,23 +1735,23 @@ function getMarcaLabel(nombre) {
   }
   return '';
 }
-
+ 
 function selectMarca(marca) {
   window.activeMarca = marca;
   renderSpecCat();
 }
-
+ 
 function showSpecCat(cat) {
   activeSpecCat = cat;
   document.querySelectorAll('.spec-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('tab-' + cat).classList.add('active');
   renderSpecCat();
 }
-
+ 
 function renderSpecCat() {
   const container = document.getElementById('specCatContent');
   const products = getSpecProducts(activeSpecCat);
-
+ 
   if (products.length === 0) {
     container.innerHTML = `
       <div class="spec-empty">
@@ -1760,7 +1760,7 @@ function renderSpecCat() {
       </div>`;
     return;
   }
-
+ 
   // Marcas with brand filter buttons
   if (activeSpecCat === 'marcas') {
     const grouped = {};
@@ -1769,11 +1769,11 @@ function renderSpecCat() {
       if (!grouped[marca]) grouped[marca] = [];
       grouped[marca].push(p);
     });
-
+ 
     const activeMarca = window.activeMarca || Object.keys(grouped)[0];
     window.activeMarca = activeMarca;
     const marcaProducts = grouped[activeMarca] || [];
-
+ 
     const brandBtns = Object.entries(grouped).map(([marca, prods]) => `
       <button onclick="selectMarca('${marca}')" style="
         font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;
@@ -1784,7 +1784,7 @@ function renderSpecCat() {
         transition:all 0.15s;flex-shrink:0;-webkit-appearance:none;
       ">${marca} <span style="opacity:0.7">${prods.length}</span></button>
     `).join('');
-
+ 
     container.innerHTML = `
       <div style="display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;
         padding-bottom:12px;-webkit-overflow-scrolling:touch;" id="marcaBtnBar">
@@ -1797,7 +1797,7 @@ function renderSpecCat() {
   } else {
     container.innerHTML = `<div class="spec-grid">${products.map(p => createSpecCard(p)).join('')}</div>`;
   }
-
+ 
   // Attach click events
   container.querySelectorAll('[data-sku]').forEach(el => {
     const sku = el.dataset.sku;
@@ -1808,7 +1808,7 @@ function renderSpecCat() {
     }
   });
 }
-
+ 
 function createSpecCard(p) {
   const precio = p.Precio != null
     ? '$' + Number(p.Precio).toLocaleString('en', {minimumFractionDigits:2, maximumFractionDigits:2})
@@ -1817,7 +1817,7 @@ function createSpecCard(p) {
     ? '$' + (p.Precio / p.Unidades).toLocaleString('en', {minimumFractionDigits:2, maximumFractionDigits:2})
     : '';
   const imgSrc = p.Imagen ? `/images/${p.Imagen}` : '';
-
+ 
   return `
     <div class="card" data-sku="${p.Sku}" style="position:relative;">
       <div class="card-img-wrap spec-card-img" style="cursor:pointer;">
@@ -1844,23 +1844,23 @@ function createSpecCard(p) {
       </button>
     </div>`;
 }
-
-
+ 
+ 
 // ── SHARE VIA WHATSAPP ─────────────────────────────
 let currentShareProduct = null;
-
+ 
 function fmt(n) {
   return '$' + Number(n).toLocaleString('en', {minimumFractionDigits:2, maximumFractionDigits:2});
 }
-
+ 
 function shareProduct(p) {
   currentShareProduct = p;
   const unidades = p.Unidades || 0;
   const precio = p.Precio;
-
+ 
   document.getElementById('discountProductName').textContent = p.Nombre;
   document.getElementById('discountInput').value = '';
-
+ 
   if (precio) {
     document.getElementById('discountRegCaja').textContent = fmt(precio);
     document.getElementById('discountRegUnidad').textContent = unidades > 0 ? fmt(precio / unidades) : 'N/D';
@@ -1868,21 +1868,21 @@ function shareProduct(p) {
     document.getElementById('discountRegCaja').textContent = 'N/D';
     document.getElementById('discountRegUnidad').textContent = 'N/D';
   }
-
+ 
   document.getElementById('discountSpecialCajaBox').style.display = 'none';
   document.getElementById('discountSpecialUnidadBox').style.display = 'none';
   document.getElementById('discountOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
   setTimeout(() => document.getElementById('discountInput').focus(), 300);
 }
-
+ 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('discountInput').addEventListener('input', function() {
     const p = currentShareProduct;
     if (!p || !p.Precio) return;
     const pct = parseFloat(this.value) || 0;
     const unidades = p.Unidades || 0;
-
+ 
     if (pct > 0 && pct <= 50) {
       const discCaja = p.Precio * (1 - pct / 100);
       document.getElementById('discountSpecialCaja').textContent = fmt(discCaja);
@@ -1895,24 +1895,24 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 });
-
+ 
 function closeDiscount() {
   document.getElementById('discountOverlay').classList.remove('open');
   document.body.style.overflow = '';
   currentShareProduct = null;
 }
-
+ 
 function sendWhatsApp() {
   const p = currentShareProduct;
   if (!p) return;
   const unidades = p.Unidades || 0;
   const pct = parseFloat(document.getElementById('discountInput').value) || 0;
   const precio = p.Precio;
-
+ 
   let msg = `🛒 *${p.Nombre}*\n`;
   msg += `SKU: ${p.Sku} | ${p.Size}\n`;
   msg += `📦 Unidades x caja: ${unidades}\n`;
-
+ 
   if (precio) {
     msg += `\n💰 Precio x caja: ${fmt(precio)}\n`;
     msg += `💵 Precio x unidad: ${unidades > 0 ? fmt(precio / unidades) : 'N/D'}`;
@@ -1925,16 +1925,16 @@ function sendWhatsApp() {
   } else {
     msg += `💰 Precio: N/D`;
   }
-
+ 
   closeDiscount();
   window.open('https://wa.me/?text=' + encodeURIComponent(msg), '_blank');
 }
-
-
+ 
+ 
 // ── ORDEN ─────────────────────────────────────────────
 let ordenItems = [];
 let _buscarTimer = null;
-
+ 
 function buscarProductoOrden(val) {
   clearTimeout(_buscarTimer);
   _buscarTimer = setTimeout(() => {
@@ -1953,7 +1953,7 @@ function buscarProductoOrden(val) {
     }).join('');
   }, 250);
 }
-
+ 
 function agregarAOrden(sku) {
   const p = allProducts.find(x => String(x.Sku) === String(sku));
   if (!p) return;
@@ -1965,7 +1965,7 @@ function agregarAOrden(sku) {
   document.getElementById('ordenResults').innerHTML = '';
   renderOrden();
 }
-
+ 
 function cambiarQty(sku, delta) {
   const item = ordenItems.find(i => String(i.producto.Sku) === String(sku));
   if (!item) return;
@@ -1973,19 +1973,19 @@ function cambiarQty(sku, delta) {
   const input = document.querySelector('[data-qty-sku="' + sku + '"]');
   if (input) input.value = item.qty;
 }
-
+ 
 function setQty(sku, val) {
   const item = ordenItems.find(i => String(i.producto.Sku) === String(sku));
   if (!item) return;
   const n = parseInt(val);
   item.qty = isNaN(n) || n < 1 ? 1 : n;
 }
-
+ 
 function removeFromOrden(sku) {
   ordenItems = ordenItems.filter(i => String(i.producto.Sku) !== String(sku));
   renderOrden();
 }
-
+ 
 function clearOrden() {
   if (!ordenItems.length) return;
   if (!confirm('¿Limpiar la orden?')) return;
@@ -1993,7 +1993,7 @@ function clearOrden() {
   document.getElementById('ordenCliente').value = '';
   renderOrden();
 }
-
+ 
 function renderOrden() {
   const container = document.getElementById('ordenItems');
   const empty = document.getElementById('ordenEmpty');
@@ -2022,7 +2022,7 @@ function renderOrden() {
       '</div></div>';
   }).join('');
 }
-
+ 
 // ── BARCODE ────────────────────────────────────────────
 function openBarcodeModalForProduct(p) {
   document.getElementById('barcodeProductName').textContent = p.Nombre || '';
@@ -2041,11 +2041,11 @@ function openBarcodeModalForProduct(p) {
   }
   document.getElementById('barcodeOverlay').classList.add('open');
 }
-
+ 
 function closeBarcodeModal() {
   document.getElementById('barcodeOverlay').classList.remove('open');
 }
-
+ 
 // ── LOGOUT ────────────────────────────────────────────
 async function doLogout() {
   await supabaseClient.auth.signOut();
@@ -2053,33 +2053,33 @@ async function doLogout() {
   document.getElementById('mainHeader').style.display = 'none';
   document.getElementById('bottomNav').style.display = 'none';
 }
-
-
+ 
+ 
 // ── SCROLL TO TOP ──────────────────────────────────
 window.addEventListener('scroll', () => {
   const btn = document.getElementById('scrollTop');
   if (btn) btn.classList.toggle('visible', window.scrollY > 300);
 }, { passive: true });
-
+ 
 // ── START ──────────────────────────────────────────────
 const SUPABASE_URL = 'https://ovjpbdlzfvsgeheuixqh.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92anBiZGx6ZnZzZ2VoZXVpeHFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwMjM4ODYsImV4cCI6MjA5MzU5OTg4Nn0.yOOEXr4UFEvIUKb1pn8ixyjwpxGbfTyYnHQhBT4N6BM';
 const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
+ 
 async function doLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
   const btn = document.getElementById('loginBtn');
   const err = document.getElementById('loginError');
-
+ 
   if (!email || !password) return;
-
+ 
   btn.textContent = 'Entrando...';
   btn.disabled = true;
   err.style.display = 'none';
-
+ 
   const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-
+ 
   if (error) {
     err.style.display = 'block';
     btn.textContent = 'Iniciar Sesión';
@@ -2091,14 +2091,14 @@ async function doLogin() {
     init();
   }
 }
-
+ 
 // Allow Enter key to submit
 document.addEventListener('keydown', e => {
   if (e.key === 'Enter' && document.getElementById('loginScreen').style.display !== 'none') {
     doLogin();
   }
 });
-
+ 
 // Check if already logged in
 supabaseClient.auth.getSession().then(({ data: { session } }) => {
   if (session) {
@@ -2110,33 +2110,33 @@ supabaseClient.auth.getSession().then(({ data: { session } }) => {
     document.getElementById('loginScreen').style.display = 'flex';
   }
 });
-
+ 
 // ── FULLSCREEN IMAGE VIEWER WITH PINCH ZOOM ───────────
 (function() {
   let scale = 1, startDist = 0, startScale = 1;
   let originX = 50, originY = 50;
   let isPinching = false;
-
+ 
   function dist(t) {
     const dx = t[0].clientX - t[1].clientX;
     const dy = t[0].clientY - t[1].clientY;
     return Math.sqrt(dx*dx + dy*dy);
   }
-
+ 
   function resetZoom() {
     scale = 1;
     const img = document.getElementById('viewerImg');
     img.style.transform = '';
     img.style.transformOrigin = '50% 50%';
   }
-
+ 
   const inner = () => document.getElementById('viewerInner');
   const img = () => document.getElementById('viewerImg');
-
+ 
   document.addEventListener('touchstart', function(e) {
     if (!document.getElementById('imgViewer').classList.contains('open')) return;
     if (!e.target.closest('#viewerInner')) return;
-
+ 
     if (e.touches.length === 2) {
       isPinching = true;
       startDist = dist(e.touches);
@@ -2151,7 +2151,7 @@ supabaseClient.auth.getSession().then(({ data: { session } }) => {
       e.preventDefault();
     }
   }, { passive: false });
-
+ 
   document.addEventListener('touchmove', function(e) {
     if (!isPinching || e.touches.length < 2) return;
     if (!document.getElementById('imgViewer').classList.contains('open')) return;
@@ -2160,12 +2160,12 @@ supabaseClient.auth.getSession().then(({ data: { session } }) => {
     scale = newScale;
     img().style.transform = `scale(${scale})`;
   }, { passive: false });
-
+ 
   document.addEventListener('touchend', function(e) {
     if (e.touches.length < 2) isPinching = false;
     if (scale < 1.05) resetZoom();
   });
-
+ 
   // Double tap to zoom/reset
   let lastTap = 0;
   document.addEventListener('touchstart', function(e) {
@@ -2187,12 +2187,12 @@ supabaseClient.auth.getSession().then(({ data: { session } }) => {
     }
     lastTap = now;
   }, { passive: false });
-
+ 
   // Close on tap outside image
   document.getElementById('imgViewer').addEventListener('click', function(e) {
     if (e.target === this) closeViewer();
   });
-
+ 
   window.openViewer = function(src) {
     if (!src) return;
     resetZoom();
@@ -2200,14 +2200,14 @@ supabaseClient.auth.getSession().then(({ data: { session } }) => {
     document.getElementById('imgViewer').classList.add('open');
     document.body.style.overflow = 'hidden';
   };
-
+ 
   window.closeViewer = function() {
     resetZoom();
     document.getElementById('imgViewer').classList.remove('open');
     document.body.style.overflow = '';
   };
 })();
-
+ 
 </script>
 </body>
 </html>
