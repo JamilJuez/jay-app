@@ -1416,16 +1416,13 @@ html, body {
     </svg>
     Brands
   </button>
-  <button class="nav-btn" id="navOrden" onclick="showPage('orden')">
+  <button class="nav-btn" id="navOrden" onclick="showPage('orden')" style="position:relative;">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
       <rect x="9" y="3" width="6" height="4" rx="1"/>
       <path d="M9 12h6M9 16h4"/>
     </svg>
     Orden
-    <span id="ordenBadge" style="display:none;position:absolute;top:6px;right:calc(50% - 18px);
-      background:var(--red);color:white;border-radius:50%;width:16px;height:16px;
-      font-size:10px;font-weight:700;line-height:16px;text-align:center;">0</span>
   </button>
 </nav>
 
@@ -1908,13 +1905,7 @@ function clearOrden() {
 }
 
 function updateOrdenBadge() {
-  const badge = document.getElementById('ordenBadge');
-  if (ordenItems.length > 0) {
-    badge.textContent = ordenItems.length;
-    badge.style.display = 'block';
-  } else {
-    badge.style.display = 'none';
-  }
+  // badge removido por simplicidad
 }
 
 function renderOrden() {
