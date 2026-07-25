@@ -1890,6 +1890,20 @@ function agregarAOrden(sku) {
   renderOrden();
 }
 
+function cambiarQty(sku, delta) {
+  const item = ordenItems.find(i => String(i.producto.Sku) === String(sku));
+  if (!item) return;
+  item.qty = Math.max(1, item.qty + delta);
+  renderOrden();
+}
+
+function setQty(sku, val) {
+  const item = ordenItems.find(i => String(i.producto.Sku) === String(sku));
+  if (!item) return;
+  const n = parseInt(val);
+  item.qty = isNaN(n) || n < 1 ? 1 : n;
+}
+
 function removeFromOrden(sku) {
   ordenItems = ordenItems.filter(i => String(i.producto.Sku) !== String(sku));
   updateOrdenBadge();
@@ -1938,6 +1952,22 @@ function renderOrden() {
             <div class="orden-card-prices">
               <div class="orden-card-price-caja">${precio}</div>
               ${precioUd ? `<div class="orden-card-price-ud">${precioUd}</div>` : ''}
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
+              <button onclick="cambiarQty('${p.Sku}', -1)" style="
+                width:28px;height:28px;border-radius:50%;background:var(--border);
+                border:none;color:var(--text);font-size:18px;cursor:pointer;
+                display:flex;align-items:center;justify-content:center;line-height:1;flex-shrink:0;">−</button>
+              <input type="number" value="${qty}" min="1"
+                onchange="setQty('${p.Sku}', this.value)"
+                style="width:48px;text-align:center;background:var(--dark);border:1.5px solid var(--border);
+                border-radius:8px;color:var(--text);font-family:'Barlow Condensed',sans-serif;
+                font-size:18px;font-weight:700;padding:4px;outline:none;-webkit-appearance:none;">
+              <button onclick="cambiarQty('${p.Sku}', 1)" style="
+                width:28px;height:28px;border-radius:50%;background:var(--red);
+                border:none;color:white;font-size:18px;cursor:pointer;
+                display:flex;align-items:center;justify-content:center;line-height:1;flex-shrink:0;">+</button>
+              <span style="font-size:11px;color:var(--muted);">cajas</span>
             </div>
           </div>
           <button class="orden-card-remove" onclick="removeFromOrden('${p.Sku}')">✕</button>
