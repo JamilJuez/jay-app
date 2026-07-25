@@ -55,7 +55,7 @@ def cargar_goya():
 def cargar_productos():
     log(f"Cargando productos: {PRODUCTOS_XLSX}")
     try:
-        df = pd.read_excel(PRODUCTOS_XLSX)
+        df = pd.read_excel(PRODUCTOS_XLSX, dtype={'UPC': str})
         cols = ['Categoria','SubCategoria','Sku','Size','Precio','Nombre','Disponible','Imagen','Unidades','Estado']
         if 'Kosher' in df.columns:
             cols.append('Kosher')
