@@ -1606,9 +1606,21 @@ function createCard(p, i) {
     e.stopPropagation();
     shareProduct(p);
   });
+
+  // Barcode button
+  const barcodeBtn = document.createElement('button');
+  barcodeBtn.className = 'share-btn';
+  barcodeBtn.style.top = '46px';
+  barcodeBtn.innerHTML = `<svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg"><path d="M2 4h2v16H2V4zm3 0h1v16H5V4zm2 0h2v16H7V4zm3 0h1v16h-1V4zm2 0h2v16h-2V4zm3 0h1v16h-1V4zm2 0h2v16h-2V4z"/></svg>`;
+  barcodeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    openBarcodeModalForProduct(p);
+  });
+
   div.style.position = 'relative';
   div.appendChild(shareBtn);
-  div.addEventListener('click', () => openModal(p));
+  div.appendChild(barcodeBtn);
+  div.addEventListener('click', () => openViewer(p.Imagen ? `images/${p.Imagen}` : ''));
   return div;
 }
 
@@ -1648,10 +1660,10 @@ function openModal(p) {
   `;
   document.getElementById('modalStats').innerHTML = statsHtml;
 
-  // Barcode button
+  // Barcode button — siempre visible, el modal maneja el caso sin UPC
   const barcodeBtn = document.getElementById('modalBarcodeBtn');
   barcodeBtn._product = p;
-  barcodeBtn.style.display = p.UPC ? 'block' : 'none';
+  barcodeBtn.style.display = 'block';
 
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1929,15 +1941,19 @@ function sendWhatsApp() {
 }
 
 // ── BARCODE MODAL ─────────────────────────────────────
-function openBarcodeModal() {
-  const p = document.getElementById('modalBarcodeBtn')._product;
-  if (!p) return;
+function openBarcodeModalForProduct(p) {
 
   document.getElementById('barcodeProductName').textContent = p.Nombre || '';
   document.getElementById('barcodeProductSku').textContent = `SKU ${p.Sku}`;
 
   const content = document.getElementById('barcodeContent');
-  const upc = (p.UPC || '').toString().replace(/\D/g, '');
+
+  // UPC del JSON, o intentar construirlo con patrón Goya: 041331 + SKU (pad a 6 dígitos)
+  let upc = (p.UPC || '').toString().replace(/\D/g, '');
+  if (!upc && p.Sku) {
+    const skuPad = String(p.Sku).padStart(6, '0');
+    upc = '041331' + skuPad; // 12 dígitos = UPC-A sin dígito verificador — usamos CODE128
+  }
 
   if (upc && upc.length >= 8) {
     content.innerHTML = `
