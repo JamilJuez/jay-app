@@ -73,7 +73,7 @@ def cargar_productos():
         df['Size'] = df['Size'].fillna('')
         df['Imagen'] = df['Imagen'].fillna('')
         if 'UPC' in df.columns:
-            df['UPC'] = df['UPC'].fillna('').astype(str).str.replace(r'\.0$', '', regex=True)
+            df['UPC'] = df['UPC'].astype(str).str.replace(r'\.0$', '', regex=True).str.strip().replace('nan', '')
         log(f"Productos: {len(df)} SKUs cargados", "OK")
         return df
     except Exception as e:
