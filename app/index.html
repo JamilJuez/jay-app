@@ -1903,24 +1903,7 @@ function volverALista() {
   renderOrdenLista();
 }
 
-function guardarOrdenActual() {
-  if (!ordenActualId) return;
-  const cliente = document.getElementById('ordenCliente')?.value || '';
-  const ordenes = getOrdenes();
-  // Limpiar órdenes de más de 7 días
-  const ahora = Date.now();
-  Object.keys(ordenes).forEach(k => {
-    if (ahora - ordenes[k].ts > 7 * 24 * 60 * 60 * 1000) delete ordenes[k];
-  });
-  ordenes[ordenActualId] = {
-    cliente,
-    items: ordenItems.map(i => ({ sku: i.producto.Sku, qty: i.qty })),
-    ts: ahora
-  };
-  saveOrdenes(ordenes);
-  // Actualizar título
-  document.getElementById('ordenActivaTitulo').textContent = cliente || 'Sin nombre';
-}
+function guardarOrdenLocal() { guardarOrdenActual(); }
 
 function borrarOrdenActiva() {
   if (!confirm('¿Borrar esta orden?')) return;
@@ -1968,8 +1951,6 @@ function renderOrdenLista() {
   }).join('');
 }
 
-function guardarOrdenLocal() { guardarOrdenActual(); } // [{producto, qty}]
-
 function showPage(page) {
   currentPage = page;
   document.getElementById('catalogPage').classList.toggle('active', page === 'catalog');
@@ -1986,20 +1967,25 @@ function showPage(page) {
   if (page === 'orden') renderOrdenLista();
 }
 
+let _buscarTimer = null;
+let _guardarTimer = null;
+
 function buscarProductoOrden(val) {
+  clearTimeout(_buscarTimer);
+  _buscarTimer = setTimeout(() => _doBuscar(val), 200);
+}
+
+function _doBuscar(val) {
   const resultsDiv = document.getElementById('ordenResults');
   if (!val || val.length < 2) { resultsDiv.innerHTML = ''; return; }
-
   const q = val.trim();
   const matches = allProducts.filter(p =>
     String(p.Sku).endsWith(q) || String(p.Sku).includes(q)
   ).slice(0, 5);
-
   if (matches.length === 0) {
-    resultsDiv.innerHTML = `<div style="text-align:center;padding:16px;color:var(--muted);font-size:13px;">Sin resultados para "${q}"</div>`;
+    resultsDiv.innerHTML = `<div style="text-align:center;padding:16px;color:var(--muted);font-size:13px;">Sin resultados</div>`;
     return;
   }
-
   resultsDiv.innerHTML = matches.map(p => {
     const precio = p.Precio != null ? '$' + Number(p.Precio).toFixed(2) : 'N/D';
     const imgSrc = p.Imagen ? `images/${p.Imagen}` : '';
@@ -2014,6 +2000,28 @@ function buscarProductoOrden(val) {
         <button class="orden-add-btn">+</button>
       </div>`;
   }).join('');
+}
+
+function guardarOrdenActual() {
+  clearTimeout(_guardarTimer);
+  _guardarTimer = setTimeout(() => _doGuardar(), 400);
+}
+
+function _doGuardar() {
+  if (!ordenActualId) return;
+  const cliente = document.getElementById('ordenCliente')?.value || '';
+  const ordenes = getOrdenes();
+  const ahora = Date.now();
+  Object.keys(ordenes).forEach(k => {
+    if (ahora - ordenes[k].ts > 7 * 24 * 60 * 60 * 1000) delete ordenes[k];
+  });
+  ordenes[ordenActualId] = {
+    cliente,
+    items: ordenItems.map(i => ({ sku: i.producto.Sku, qty: i.qty })),
+    ts: ahora
+  };
+  saveOrdenes(ordenes);
+  document.getElementById('ordenActivaTitulo').textContent = cliente || 'Sin nombre';
 }
 
 function agregarAOrden(sku) {
