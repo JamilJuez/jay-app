@@ -1375,13 +1375,17 @@ html, body {
     </div>
 
     <!-- Search box -->
-    <div style="position:relative;margin-bottom:14px;">
-      <input id="ordenSearch" type="number" inputmode="numeric" placeholder="Últimos 4 dígitos del SKU..."
-        style="width:100%;background:var(--dark);border:1.5px solid var(--border);border-radius:12px;
-        color:var(--text);font-family:'Barlow',sans-serif;font-size:16px;padding:13px 50px 13px 16px;
+    <div style="display:flex;gap:8px;margin-bottom:14px;">
+      <input id="ordenSearch" type="number" inputmode="numeric" placeholder="SKU..."
+        style="flex:1;background:var(--dark);border:1.5px solid var(--border);border-radius:12px;
+        color:var(--text);font-family:'Barlow',sans-serif;font-size:16px;padding:13px 16px;
         outline:none;-webkit-appearance:none;box-sizing:border-box;"
         oninput="buscarProductoOrden(this.value)">
-      <span style="position:absolute;right:16px;top:50%;transform:translateY(-50%);font-size:20px;">🔍</span>
+      <input id="ordenQtyInput" type="number" inputmode="numeric" placeholder="1"
+        min="1"
+        style="width:70px;background:var(--dark);border:1.5px solid var(--border);border-radius:12px;
+        color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;
+        padding:13px 10px;text-align:center;outline:none;-webkit-appearance:none;box-sizing:border-box;">
     </div>
 
     <!-- Search results -->
@@ -1394,7 +1398,7 @@ html, body {
     <div id="ordenEmpty" style="text-align:center;padding:50px 20px;color:var(--muted);">
       <div style="font-size:48px;margin-bottom:12px;opacity:0.4;">🛒</div>
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;">Orden vacía</div>
-      <div style="font-size:13px;margin-top:6px;">Escribe los últimos 4 dígitos del SKU para agregar productos</div>
+      <div style="font-size:13px;margin-top:6px;">Escribe el SKU y la cantidad, luego toca el producto</div>
     </div>
 
   </div>
@@ -1875,15 +1879,19 @@ function agregarAOrden(sku) {
   const p = allProducts.find(x => String(x.Sku) === String(sku));
   if (!p) return;
 
+  const qtyInput = document.getElementById('ordenQtyInput');
+  const qty = Math.max(1, parseInt(qtyInput.value) || 1);
+
   const existing = ordenItems.find(i => String(i.producto.Sku) === String(sku));
   if (existing) {
-    existing.qty++;
+    existing.qty += qty;
   } else {
-    ordenItems.push({ producto: p, qty: 1 });
+    ordenItems.push({ producto: p, qty });
   }
 
   // Limpiar búsqueda
   document.getElementById('ordenSearch').value = '';
+  document.getElementById('ordenQtyInput').value = '';
   document.getElementById('ordenResults').innerHTML = '';
 
   updateOrdenBadge();
@@ -1953,20 +1961,12 @@ function renderOrden() {
               <div class="orden-card-price-caja">${precio}</div>
               ${precioUd ? `<div class="orden-card-price-ud">${precioUd}</div>` : ''}
             </div>
-            <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
-              <button onclick="cambiarQty('${p.Sku}', -1)" style="
-                width:28px;height:28px;border-radius:50%;background:var(--border);
-                border:none;color:var(--text);font-size:18px;cursor:pointer;
-                display:flex;align-items:center;justify-content:center;line-height:1;flex-shrink:0;">−</button>
+            <div style="display:flex;align-items:center;gap:6px;margin-top:8px;">
+              <button onclick="cambiarQty('${p.Sku}', -1)" style="width:26px;height:26px;border-radius:50%;background:var(--border);border:none;color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">−</button>
               <input type="number" value="${qty}" min="1"
                 onchange="setQty('${p.Sku}', this.value)"
-                style="width:48px;text-align:center;background:var(--dark);border:1.5px solid var(--border);
-                border-radius:8px;color:var(--text);font-family:'Barlow Condensed',sans-serif;
-                font-size:18px;font-weight:700;padding:4px;outline:none;-webkit-appearance:none;">
-              <button onclick="cambiarQty('${p.Sku}', 1)" style="
-                width:28px;height:28px;border-radius:50%;background:var(--red);
-                border:none;color:white;font-size:18px;cursor:pointer;
-                display:flex;align-items:center;justify-content:center;line-height:1;flex-shrink:0;">+</button>
+                style="width:44px;text-align:center;background:var(--dark);border:1.5px solid var(--border);border-radius:8px;color:var(--text);font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;padding:3px;outline:none;-webkit-appearance:none;">
+              <button onclick="cambiarQty('${p.Sku}', 1)" style="width:26px;height:26px;border-radius:50%;background:var(--red);border:none;color:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;">+</button>
               <span style="font-size:11px;color:var(--muted);">cajas</span>
             </div>
           </div>
